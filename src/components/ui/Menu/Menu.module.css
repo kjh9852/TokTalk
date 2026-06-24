@@ -1,0 +1,70 @@
+.buttonPosition {
+  position: absolute;
+  display: flex;
+  padding: 10px;
+  top: 15px;
+  left: 15px;
+  background: #dfdfdf;
+  border-radius: 8px;
+  z-index: 2;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+}
+
+.menuWrapper {
+  overflow: hidden;
+  transition: 0.3s ease;
+}
+
+.menuWrapper.open {
+  width: 132px;
+}
+
+.menuWrapper.close {
+  width: 0px;
+}
+
+.menuBar {
+  position: absolute;
+  top: 0px;
+  left: 50px;
+  z-index: 2;
+}
+
+.menuList {
+  position: relative;
+  background: #dfdfdf;
+  border-radius: 8px;
+}
+
+.menuImage {
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.menuFlex {
+  display: flex;
+  justify-content: center;
+}
+
+.menuName {
+  display: none;
+  position: absolute;
+  padding: 5px;
+  margin-top: 5px;
+  top: 100%;
+  white-space: nowrap;
+  background: #fff;
+  border-radius: 5px;
+  color: #333;
+  font-size: 14px;
+}
+
+.menuButton:hover .menuName {
+  display: block;
+}
