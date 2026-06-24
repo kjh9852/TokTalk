@@ -1,0 +1,27 @@
+.chatSection {
+  position: fixed;
+  overflow: hidden;
+  width: 780px;
+  max-height: 400px;
+  padding-bottom: 60px;
+  bottom: 0px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 12px 12px 0 0;
+  z-index: 10;
+}
+
+.chatView {
+  padding: 12px 10px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 20px;
+}
+
+/* 스크롤바 막대 */
+::-webkit-scrollbar-thumb {
+  background: #62ff74; /* 스크롤바 막대 색상 */
+  border: 2px solid #426f12; /* 스크롤바 막대 테두리 설정  */
+  border-radius: 12px 12px 12px 12px;
+}

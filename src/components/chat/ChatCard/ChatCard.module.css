@@ -1,0 +1,15 @@
+.container {
+  overflow-y: scroll;
+  max-width: 720px;
+  max-height: 200px;
+  padding-left: 20px;
+}
+
+.chat {
+  word-break: break-all;
+  color: #fff;
+}
+
+.localColor {
+  color: #4aff2b;
+}

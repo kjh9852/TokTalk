@@ -1,0 +1,20 @@
+.container {
+  position: fixed;
+  max-width: 720px;
+  bottom: 20px;
+}
+.form {
+  display: flex;
+  gap: 24px;
+  padding-left: 20px;
+  width: 100%;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  width: 620px;
+  border: none;
+  background: #ededed;
+  border-radius: 12px;
+}
