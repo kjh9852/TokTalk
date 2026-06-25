@@ -8,7 +8,7 @@ import { RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 
 export default function Signpost({ controlsRef }) {
-  const { scene } = useGLTF("models/signs.glb");
+  const { scene } = useGLTF("/models/signs.glb");
   const { isAdmin } = useAdmin();
   const texture = useTexture(woodTexture);
   const { setModalType, handleModalOpen } = useModalContext();
@@ -79,4 +79,4 @@ export default function Signpost({ controlsRef }) {
   );
 }
 
-useGLTF.preload("/signs.glb");
+useGLTF.preload("/models/signs.glb");
