@@ -1,7 +1,7 @@
 import { useGLTF } from "@react-three/drei";
 
 export default function Yeti() {
-  const { nodes } = useGLTF("models/yeti.glb");
+  const { nodes } = useGLTF("/models/yeti.glb");
 
   return (
     <group dispose={null} scale={1}>
@@ -44,4 +44,4 @@ export default function Yeti() {
   );
 }
 
-useGLTF.preload("/yeti.glb");
+useGLTF.preload("/models/yeti.glb");

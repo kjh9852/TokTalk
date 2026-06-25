@@ -6,7 +6,7 @@ import { RigidBody } from "@react-three/rapier";
 import TriangleButton from "@/canvas/TriangleButton";
 
 export default function Board({ onPostNext, onPostPrev }) {
-  const { scene } = useGLTF("models/boardbake.glb");
+  const { scene } = useGLTF("/models/boardbake.glb");
   const boardRef = useRef();
 
   useEffect(() => {
@@ -36,4 +36,4 @@ export default function Board({ onPostNext, onPostPrev }) {
   );
 }
 
-useGLTF.preload("boardbake.glb");
+useGLTF.preload("/models/boardbake.glb");

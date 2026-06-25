@@ -31,7 +31,7 @@ export default function Player({
   message,
   nickname,
 }) {
-  const { scene, animations } = useGLTF("models/pinkbin.glb");
+  const { scene, animations } = useGLTF("/models/pinkbin.glb");
   const { actions, ref } = useAnimations(animations);
   const playerRef = useRef();
   const chatRef = useRef();
@@ -118,7 +118,62 @@ export default function Player({
     }
   }, [isLocal, onUpdate, forward, backward, left, right]);
 
-  useFrame((state) => {
+  const targetPos = new THREE.Vector3();
+  const targetQuat = new THREE.Quaternion();
+
+  useFrame((state, delta) => {
+    // if (!isLocal) {
+    //   if (!playerRef.current) return;
+
+    //   // 1. 부모(소켓)에게 받은 최신 목적지 position 배열 적용
+    //   if (position) {
+    //     targetPos.set(position[0], position[1], position[2]);
+
+    //     // 현재 라피어 물리 바디의 위치를 가져옵니다.
+    //     const currentPos = playerRef.current.translation();
+    //     const currentPosVec = new THREE.Vector3(
+    //       currentPos.x,
+    //       currentPos.y,
+    //       currentPos.z,
+    //     );
+
+    //     // 매 프레임마다 목적지를 향해 15%씩 미끄러지듯 이동 (0.15 값을 조절해 부드러움 설정 가능)
+    //     currentPosVec.lerp(targetPos, 1 - Math.exp(-12.5 * delta));
+
+    //     // 보간된 위치를 물리 엔진 바디에 부드럽게 반영
+    //     playerRef.current.setNextKinematicTranslation(currentPosVec);
+    //   }
+
+    //   // 2. 부모(소켓)에게 받은 최신 회전 Quaternion 배열 적용
+    //   if (rotation) {
+    //     targetQuat.set(rotation[0], rotation[1], rotation[2], rotation[3]);
+
+    //     // 현재 라피어 물리 바디의 회전값을 쿼터니언으로 변환
+    //     const currentRot = playerRef.current.rotation();
+    //     const currentQuat = new THREE.Quaternion(
+    //       currentRot.x,
+    //       currentRot.y,
+    //       currentRot.z,
+    //       currentRot.w,
+    //     );
+
+    //     // 회전도 부드럽게 slerp(구면 선형 보간) 처리
+    //     currentQuat.slerp(targetQuat, 0.15);
+
+    //     playerRef.current.setRotation(currentQuat, true);
+    //   }
+
+    //   // 다른 플레이어는 애니메이션만 틀어주고 카메라/조작 연산은 하지 않으므로 여기서 리턴!
+    //   if (isMoving) {
+    //     actions.defalut?.stop();
+    //     actions.walk?.play();
+    //   } else {
+    //     actions.defalut?.play();
+    //     actions.walk?.stop();
+    //   }
+    //   return;
+    // }
+
     if (!isPointerLocked) return;
     if (!playerRef.current) return;
     if (!isLocal) return;
@@ -217,6 +272,7 @@ export default function Player({
     <RigidBody
       colliders={false}
       mass={1}
+      type={isLocal ? "dynamic" : "kinematicPosition"}
       ref={playerRef}
       lockRotations
       position={position ?? [0, 10, 0]}
@@ -268,4 +324,4 @@ export default function Player({
   );
 }
 
-useGLTF.preload("pinkbin.glb");
+useGLTF.preload("/models/pinkbin.glb");
