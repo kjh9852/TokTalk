@@ -4,7 +4,12 @@ import { io } from "socket.io-client";
 
 import Main from "./page/Main";
 
-const socket = io.connect("http://localhost:80");
+const SOCKET_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:80"
+    : "https://toktalkserver.onrender.com";
+
+const socket = io.connect(SOCKET_URL);
 
 function App() {
   const [userCount, setUserCount] = useState("");
