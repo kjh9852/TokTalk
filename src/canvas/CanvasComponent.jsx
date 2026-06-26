@@ -8,8 +8,10 @@ import { Physics, RigidBody } from "@react-three/rapier";
 
 import usePointerLock from "@/hooks/usePointerLock";
 
+import OtherPlayer from "@/canvas/OtherPlayer";
 import Player from "@/canvas/Player";
 import Signpost from "@/canvas/Signpost";
+import Wall from "@/canvas/Wall";
 import Yeti from "@/canvas/Yeti";
 
 import Post from "@/components/post/Post";
@@ -161,26 +163,38 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
           shadow-camera-right={-shadowOffset}
         />
         <Physics gravity={[0, -30, 0]} debug>
+          <Wall />
           <Ground />
           <Post isEdit={isPointerLocked} />
           <Signpost controlsRef={controlsRef} />
-          {Object.entries(players).map(([id, state]) => (
-            <Player
-              key={id}
-              id={id}
-              setPlayers={setPlayers}
-              isLocal={id === socket.id}
-              onUpdate={handlePlayerUpdate}
-              isTyping={state.isTyping}
-              message={state.currentMessage}
-              rotation={state.rotation}
-              position={state.position}
-              isMoving={state.isMoving}
-              nickname={state.nickname ?? "익명"}
-              ref={localPlayerRef.current[players.id]}
-              isPointerLocked={isLock}
-            />
-          ))}
+          {Object.entries(players).map(([id, state]) => {
+            console.log(id, state);
+            const isLocal = id === socket.id;
+            return isLocal ? (
+              <Player
+                key={id}
+                id={id}
+                onUpdate={handlePlayerUpdate}
+                isTyping={state.isTyping}
+                message={state.currentMessage}
+                nickname={state.nickname ?? "익명"}
+                ref={localPlayerRef.current[players.id]}
+                isPointerLocked={isLock}
+              />
+            ) : (
+              <OtherPlayer
+                key={id}
+                id={id}
+                position={state.position}
+                rotation={state.rotation}
+                isTyping={state.isTyping}
+                isMoving={state.isMoving}
+                message={state.currentMessage}
+                nickname={state.nickname ?? "익명"}
+              />
+            );
+          })}
+
           <RigidBody>
             <mesh position={[0, 5, -5]}>
               <boxGeometry />
