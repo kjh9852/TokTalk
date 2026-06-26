@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import { useLanguage } from "@/context/LanguageContextProvider";
-import { useUserContext } from "@/context/UserContextProvider";
+import { useModalContext } from "@/context/ModalContextProvider";
 
 import Button from "@/components/ui/Button/Button";
 
@@ -13,7 +13,7 @@ export default function ChatInput({
   onSendMessage,
   setIsChatExpanded,
 }) {
-  const { isOpen } = useUserContext();
+  const { isOpen } = useModalContext();
   const chatRef = useRef(null);
   const { t } = useLanguage();
 
@@ -55,6 +55,7 @@ export default function ChatInput({
           value={userInputMsg}
           onChange={onChangeUserMsg}
           placeholder={t.chat.message}
+          disabled={isOpen}
         />
         <Button type="small">{t.chat.button}</Button>
       </form>
