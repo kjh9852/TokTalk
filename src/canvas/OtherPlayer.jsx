@@ -6,6 +6,9 @@ import * as THREE from "three";
 
 import PlayerModel from "@/canvas/PlayerModel";
 
+const targetPos = new THREE.Vector3();
+const targetQuat = new THREE.Quaternion();
+
 export default function OtherPlayer({
   position,
   rotation,
@@ -15,9 +18,6 @@ export default function OtherPlayer({
   isTyping,
 }) {
   const playerRef = useRef();
-
-  const targetPos = new THREE.Vector3();
-  const targetQuat = new THREE.Quaternion();
 
   useFrame((state, delta) => {
     if (!playerRef.current) return;
@@ -56,7 +56,7 @@ export default function OtherPlayer({
       // 회전도 부드럽게 slerp(구면 선형 보간) 처리
       currentQuat.slerp(targetQuat, 0.15);
 
-      playerRef.current.setRotation(currentQuat, true);
+      playerRef.current.setNextKinematicRotation(currentQuat);
     }
   });
 

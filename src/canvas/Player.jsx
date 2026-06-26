@@ -27,12 +27,27 @@ export default function Player({
 
   const isMoving = forward || backward || left || right;
 
+  const controlsRef = useRef({ forward, backward, left, right });
+
   const rapier = useRapier();
+
+  useEffect(() => {
+    controlsRef.current = { forward, backward, left, right };
+  }, [forward, backward, left, right]);
 
   useEffect(() => {
     // 로컬 플레이어 상태를 서버로 주기적으로 전송
     const interval = setInterval(() => {
-      const isMoving = forward || backward || left || right;
+      if (!playerRef.current) return;
+
+      const {
+        forward: f,
+        backward: b,
+        left: l,
+        right: r,
+      } = controlsRef.current;
+      const currentIsMoving = f || b || l || r;
+
       const playerPosition = playerRef.current.translation();
       const playerRotation = playerRef.current.rotation();
       const newState = {
@@ -43,7 +58,7 @@ export default function Player({
           playerRotation.z,
           playerRotation.w,
         ],
-        isMoving,
+        isMoving: currentIsMoving,
       };
       onUpdate(newState); // 부모 컴포넌트를 통해 서버에 데이터 전송
     }, 50);

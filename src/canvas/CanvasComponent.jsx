@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useModalContext } from "@/context/ModalContextProvider";
 import { useUserContext } from "@/context/UserContextProvider";
@@ -29,9 +29,9 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
   const messageTimer = useRef({});
 
   // 플레이어 업데이트 함수
-  const handlePlayerUpdate = (state) => {
+  const handlePlayerUpdate = useCallback((state) => {
     socket.emit("updatePlayer", { state });
-  };
+  }, []);
 
   useEffect(() => {
     socket.emit("join", { nickname });
@@ -178,7 +178,7 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
                 isTyping={state.isTyping}
                 message={state.currentMessage}
                 nickname={state.nickname ?? "익명"}
-                ref={localPlayerRef.current[players.id]}
+                ref={localPlayerRef.current[id]}
                 isPointerLocked={isLock}
               />
             ) : (
