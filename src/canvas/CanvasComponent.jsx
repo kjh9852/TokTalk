@@ -162,7 +162,7 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
           shadow-camera-left={shadowOffset}
           shadow-camera-right={-shadowOffset}
         />
-        <Physics gravity={[0, -30, 0]} debug>
+        <Physics gravity={[0, -30, 0]}>
           <Wall />
           <Ground />
           <Post isEdit={isPointerLocked} />
