@@ -7,6 +7,7 @@ export const usePersonControls = (isPointerLocked) => {
     KeyA: "left",
     KeyD: "right",
     Space: "jump",
+    ShiftLeft: "run",
   };
 
   const MAX_PITCH = Math.PI / 2 - 0.1;
@@ -20,6 +21,7 @@ export const usePersonControls = (isPointerLocked) => {
     left: false,
     right: false,
     jump: false,
+    run: false,
     yaw: 0,
     pitch: 0,
   });
