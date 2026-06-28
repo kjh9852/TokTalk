@@ -6,6 +6,7 @@ import { PointerLockControls, Sky } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
 
+import usePlayerSocket from "@/hooks/usePlayerSocket";
 import usePointerLock from "@/hooks/usePointerLock";
 
 import OtherPlayer from "@/canvas/OtherPlayer";
@@ -21,12 +22,11 @@ import Ground from "./Ground";
 const shadowOffset = 50;
 
 export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
-  usePointerLock();
-  const { controlsRef, isLock, setIsLock } = useUserContext();
+  const { isLock, setIsLock } = usePointerLock();
+  const { controlsRef } = useUserContext();
   const { isOpen } = useModalContext();
-  const [players, setPlayers] = useState({});
+  const players = usePlayerSocket(socket, nickname);
   const localPlayerRef = useRef({});
-  const messageTimer = useRef({});
 
   // 플레이어 업데이트 함수
   const handlePlayerUpdate = useCallback((state) => {
@@ -34,89 +34,10 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
   }, []);
 
   useEffect(() => {
+    if (!socket) return;
+
     socket.emit("join", { nickname });
-  }, [nickname, socket]);
-
-  useEffect(() => {
-    const handleCurrentPlayers = (currentPlayers) => {
-      setPlayers(currentPlayers);
-    };
-
-    const handleNewPlayer = ({ id, state }) => {
-      setPlayers((prev) => ({ ...prev, [id]: state }));
-    };
-
-    const handleUpdatePlayer = ({ id, state }) => {
-      setPlayers((prev) => ({ ...prev, [id]: state }));
-    };
-
-    const handleRemovePlayer = (id) => {
-      setPlayers((prev) => {
-        const newPlayers = { ...prev };
-        delete newPlayers[id];
-        return newPlayers;
-      });
-    };
-
-    const handlePlayerTyping = ({ id }) => {
-      setPlayers((prev) => ({
-        ...prev,
-        [id]: { ...prev[id], isTyping: true },
-      }));
-      console.log(id);
-    };
-
-    const handlePlayerStopTyping = ({ id }) => {
-      setPlayers((prev) => ({
-        ...prev,
-        [id]: { ...prev[id], isTyping: false },
-      }));
-    };
-
-    socket.on("receive message", ({ id, message }) => {
-      console.log("받은 메시지 id:", id);
-      console.log("현재 players keys:", Object.keys(players));
-
-      setPlayers((prev) => {
-        if (!prev[id]) return prev;
-        return {
-          ...prev,
-          [id]: { ...prev[id], currentMessage: message },
-        };
-      });
-    });
-
-    socket.on("clear message", ({ id }) => {
-      console.log("클라이언트 clear message 수신:", id);
-      setPlayers((prev) => {
-        if (!prev[id]) return prev;
-        return {
-          ...prev,
-          [id]: { ...prev[id], currentMessage: "" },
-        };
-      });
-    });
-
-    socket.on("currentPlayers", handleCurrentPlayers);
-    socket.on("newPlayer", handleNewPlayer);
-    socket.on("updatePlayer", handleUpdatePlayer);
-    socket.on("removePlayer", handleRemovePlayer);
-    socket.on("typing", handlePlayerTyping);
-    socket.on("stopTyping", handlePlayerStopTyping);
-
-    return () => {
-      socket.off("currentPlayers", handleCurrentPlayers);
-      socket.off("newPlayer", handleNewPlayer);
-      socket.off("updatePlayer", handleUpdatePlayer);
-      socket.off("removePlayer", handleRemovePlayer);
-      socket.off("typing", handlePlayerTyping);
-      socket.off("stopTyping", handlePlayerStopTyping);
-      socket.off("receive message");
-      socket.off("clear message");
-      Object.values(messageTimer.current).forEach(clearTimeout);
-      messageTimer.current = {};
-    };
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -168,7 +89,6 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
           <Post isEdit={isPointerLocked} />
           <Signpost controlsRef={controlsRef} />
           {Object.entries(players).map(([id, state]) => {
-            console.log(id, state);
             const isLocal = id === socket.id;
             return isLocal ? (
               <Player
@@ -180,6 +100,8 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
                 nickname={state.nickname ?? "익명"}
                 ref={localPlayerRef.current[id]}
                 isPointerLocked={isLock}
+                socket={socket}
+                players={players}
               />
             ) : (
               <OtherPlayer

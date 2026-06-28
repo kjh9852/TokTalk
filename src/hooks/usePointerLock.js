@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useUserContext } from "../context/UserContextProvider";
 
 export default function usePointerLock() {
-  const { setIsLock } = useUserContext();
+  const { isLock, setIsLock } = useUserContext();
 
   useEffect(() => {
     const handlePointerLockChange = () => {
@@ -11,10 +11,13 @@ export default function usePointerLock() {
     };
 
     document.addEventListener("pointerlockchange", handlePointerLockChange);
+
     return () =>
       document.removeEventListener(
         "pointerlockchange",
         handlePointerLockChange,
       );
   }, [setIsLock]);
+
+  return { isLock, setIsLock };
 }
