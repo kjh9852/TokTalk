@@ -6,6 +6,7 @@ export const usePersonControls = (isPointerLocked) => {
     KeyS: "backward",
     KeyA: "left",
     KeyD: "right",
+    KeyE: "push",
     Space: "jump",
     ShiftLeft: "run",
   };
@@ -22,6 +23,7 @@ export const usePersonControls = (isPointerLocked) => {
     right: false,
     jump: false,
     run: false,
+    push: false,
     yaw: 0,
     pitch: 0,
   });
