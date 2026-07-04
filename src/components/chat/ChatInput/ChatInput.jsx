@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import { useLanguage } from "@/context/LanguageContextProvider";
-import { useModalContext } from "@/context/ModalContextProvider";
+import { useModalStore } from "@/store/modalStore";
 
 import Button from "@/components/ui/Button/Button";
 
@@ -13,15 +13,14 @@ export default function ChatInput({
   onSendMessage,
   setIsChatExpanded,
 }) {
-  const { isOpen } = useModalContext();
+  const isOpen = useModalStore((state) => state.isOpen);
   const chatRef = useRef(null);
   const { t } = useLanguage();
 
   const handleEnterFocus = () => {
     if (isOpen) return;
-    if (document.pointerLockElement !== null) {
-      chatRef.current.focus();
-    }
+    if (document.pointerLockElement === null) return;
+    chatRef.current.focus();
   };
 
   const handleKeyPress = (e) => {

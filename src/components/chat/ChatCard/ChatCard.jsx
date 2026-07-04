@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import styles from "./ChatCard.module.css";
 
-export default function ChatCard({ chatArr, isChatExpanded, socketId }) {
+export default function ChatCard({ chatArr, socketId }) {
   const chatRef = useRef(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function ChatCard({ chatArr, isChatExpanded, socketId }) {
             messageCount.id === socketId && styles.localColor
           }`}
           key={`${messageCount.id} - ${messageCount.time} - ${idx}`}
-        >{`${messageCount.author} : ${messageCount.message}`}</p>
+        >{`[ ${messageCount.author} ] : ${messageCount.message}`}</p>
       ))}
     </div>
   );

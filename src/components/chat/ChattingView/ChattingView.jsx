@@ -33,10 +33,10 @@ export default function ChattingView({ socket, nickname }) {
           : recentMessage;
       });
     };
-    socket.on("receive message", handleReceive);
+    socket.on("receiveMessage", handleReceive);
 
     return () => {
-      socket.off("receive message", handleReceive);
+      socket.off("receiveMessage", handleReceive);
     };
   }, [socket]);
   // 메세지 최대 갯수를 10개만 남김
@@ -44,10 +44,15 @@ export default function ChattingView({ socket, nickname }) {
   const sendMessageHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (!nickname.trim()) return; // 닉네임 없으면 중단
+      if (!nickname.trim() || userInputMsg.trim().length === 0) return;
+
       socket.emit("send message", {
         message: userInputMsg,
       });
+
+      socket.emit("stopTyping");
+      setIsTyping(false);
+
       setUserInputMsg("");
     },
     [userInputMsg, nickname, socket],
@@ -71,12 +76,19 @@ export default function ChattingView({ socket, nickname }) {
     }, 1000);
   };
 
+  useEffect(() => {
+    return () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <section className={styles.chatSection}>
       <div className={styles.chatView}>
         <ChatCard
           chatArr={isChatExpanded ? chatArr : chatArr.slice(-1)}
-          isChatExpanded={isChatExpanded}
           socketId={socket.id}
         />
         <ChatInput
