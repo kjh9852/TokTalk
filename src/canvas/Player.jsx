@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 
+import { useUserStore } from "@/store/userStore";
 import * as RAPIER from "@dimforge/rapier3d-compat";
 import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody, useRapier } from "@react-three/rapier";
 import * as THREE from "three";
 
 import { usePersonControls } from "@/hooks/usePersonControls";
+import usePointerLock from "@/hooks/usePointerLock";
 
 import PlayerModel from "@/canvas/PlayerModel";
 
@@ -24,7 +26,6 @@ const tempPitchQuat = new THREE.Quaternion();
 const tempEuler = new THREE.Euler();
 
 export default function Player({
-  isPointerLocked,
   onUpdate,
   isTyping,
   message,
@@ -36,6 +37,8 @@ export default function Player({
   const lastSentRef = useRef(0);
   const { forward, backward, left, right, jump, run, yaw, pitch, push } =
     usePersonControls();
+  const setMyPosition = useUserStore((state) => state.setMyPosition);
+  const { isLock } = usePointerLock();
   const prevPushRef = useRef(false);
   const knockbackUntil = useRef(0);
   const pushCooldownRef = useRef(0);
@@ -146,7 +149,7 @@ export default function Player({
 
     const isKnockback = performance.now() < knockbackUntil.current;
 
-    if (isPointerLocked) {
+    if (isLock) {
       if (isMoving && !isKnockback) {
         const CURRENT_SPEED = run ? MOVE_SPEED * 1.8 : MOVE_SPEED;
 
@@ -220,8 +223,6 @@ export default function Player({
 
       prevPushRef.current = push;
 
-      // if (jump && grounded) doJump();
-
       // 카메라 위치: 캐릭터 뒤쪽 위치로 고정
       const pos = playerRef.current.translation();
 
@@ -248,6 +249,13 @@ export default function Player({
       if (now - lastSentRef.current > 100) {
         const playerPosition = playerRef.current.translation();
         const playerRotation = playerRef.current.rotation();
+
+        setMyPosition({
+          x: playerPosition.x,
+          y: playerPosition.y,
+          z: playerPosition.z,
+        });
+
         const newState = {
           position: [playerPosition.x, playerPosition.y, playerPosition.z],
           rotation: [
@@ -273,7 +281,7 @@ export default function Player({
       type={"dynamic"}
       ref={playerRef}
       lockRotations
-      position={[0, 11, 0]}
+      position={[0, 5, -8]}
     >
       <CapsuleCollider args={[0.2, 0.4]} />
       <PlayerModel
