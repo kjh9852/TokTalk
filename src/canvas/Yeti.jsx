@@ -10,35 +10,35 @@ export default function Yeti() {
         receiveShadow
         geometry={nodes.Cube004.geometry}
         material={nodes.Cube004.material}
-        scale={2}
+        scale={3}
       />
       <mesh
         castShadow
         receiveShadow
         geometry={nodes.Cube004_1.geometry}
         material={nodes.Cube004_1.material}
-        scale={2}
+        scale={3}
       />
       <mesh
         castShadow
         receiveShadow
         geometry={nodes.Cube004_2.geometry}
         material={nodes.Cube004_2.material}
-        scale={2}
+        scale={3}
       />
       <mesh
         castShadow
         receiveShadow
         geometry={nodes.Cube004_3.geometry}
         material={nodes.Cube004_1.material}
-        scale={2}
+        scale={3}
       />
       <mesh
         castShadow
         receiveShadow
         geometry={nodes.Cube004_4.geometry}
         material={nodes.Cube004_4.material}
-        scale={2}
+        scale={3}
       />
     </group>
   );
