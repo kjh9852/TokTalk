@@ -4,12 +4,12 @@ import Board from "@/canvas/Board.jsx";
 
 import PostList from "./PostList/PostList.jsx";
 
-export default function Post({ isEdit }) {
+export default function Post() {
   const { postList, handleNextPage, handlePrevPage } = usePosts();
 
   return (
     <>
-      <PostList postList={postList} isEditMode={isEdit} />
+      <PostList postList={postList} />
       <Board onPostNext={handleNextPage} onPostPrev={handlePrevPage} />
     </>
   );
