@@ -13,30 +13,25 @@ import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
   const { scene, animations } = useGLTF("/models/pinkbin.glb");
   const { actions, ref } = useAnimations(animations);
-  const chatRef = useRef();
+  const chatRef = useRef(null);
   const [chatBoxSize, setChatBoxSize] = useState([0, 0]);
+  const chatPaddingX = 0.5;
+  const chatPaddingY = 0.1;
 
-  const textContent = isTyping && !message ? "..." : message;
-  const DEFAULT_CHATBOX_SIZE = [0.05, 0.15];
+  const textContent =
+    isTyping && !message
+      ? "..."
+      : message.length > 20
+        ? `${message.slice(0, 20)} ...`
+        : message;
+
+  const DEFAULT_CHATBOX_SIZE = [0.12, 0.175];
 
   useEffect(() => {
     if (!chatRef.current || !message) {
       setChatBoxSize(DEFAULT_CHATBOX_SIZE);
       return;
     }
-
-    const interval = setInterval(() => {
-      const box = new THREE.Box3().setFromObject(chatRef.current);
-      const size = new THREE.Vector3();
-      box.getSize(size);
-
-      if (size.x > 0 && size.y > 0) {
-        setChatBoxSize([size.x, size.y]);
-        clearInterval(interval);
-      }
-    }, 50);
-
-    return () => clearInterval(interval);
   }, [message]);
 
   useEffect(() => {
@@ -46,6 +41,7 @@ export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
 
   useEffect(() => {
     if (!actions) return;
+
     if (isMoving) {
       actions.defalut?.stop();
       actions.walk?.reset().fadeIn(0.2).play();
@@ -67,10 +63,13 @@ export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
   }, [scene]);
 
   return (
-    <group ref={ref}>
-      <primitive object={cloneScene} />
+    <>
+      <group ref={ref}>
+        <primitive object={cloneScene} />
+      </group>
       <Billboard position={[0, 0.7, 0]}>
         <Text
+          font="/fonts/Pretendard-Regular.otf"
           fontSize={0.2}
           color="white"
           anchorX="center"
@@ -86,14 +85,19 @@ export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
       {(message || isTyping) && (
         <Billboard position={[0, 1, 0]}>
           <RoundedBox
-            position={[0, chatBoxSize[1] / 2 - 0.01, -0.01]}
-            args={[chatBoxSize[0] + 0.5, chatBoxSize[1] + 0.05, 0.01]} // x, y, z 크기
+            position={[0, chatBoxSize[1] / 2, -0.01]}
+            args={[
+              Math.max(chatBoxSize[0] + chatPaddingX, 0.4),
+              Math.max(chatBoxSize[1] + chatPaddingY, 0.3),
+              0.01,
+            ]} // x, y, z 크기
             radius={0.05} // 모서리 반지름
             smoothness={4} // 곡률 부드럽기
           >
             <meshBasicMaterial color="black" transparent opacity={0.7} />
           </RoundedBox>
           <Text
+            font="/fonts/Pretendard-Regular.otf"
             ref={chatRef}
             fontSize={0.15}
             maxWidth={1.5}
@@ -103,11 +107,19 @@ export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
             color="white"
             anchorX="center"
             anchorY="bottom"
+            onSync={(self) => {
+              const box = new THREE.Box3().setFromObject(self);
+              const size = new THREE.Vector3();
+
+              box.getSize(size);
+
+              setChatBoxSize([size.x, size.y]);
+            }}
           >
             {textContent}
           </Text>
         </Billboard>
       )}
-    </group>
+    </>
   );
 }
