@@ -90,8 +90,8 @@ export default function usePlayerSocket(socket) {
       socket.off("nicknameUpdate", handleNicknameUpdate);
       socket.off("typing", handlePlayerTyping);
       socket.off("stopTyping", handlePlayerStopTyping);
-      socket.off("receiveMessage");
-      socket.off("clearMessage");
+      socket.off("receiveMessage", handleReceiveMessage);
+      socket.off("clearMessage", handleClearMessage);
       Object.values(messageTimer.current).forEach(clearTimeout);
       messageTimer.current = {};
     };
