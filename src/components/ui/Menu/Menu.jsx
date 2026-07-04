@@ -5,13 +5,13 @@ import MenuIcon from "@/assets/icons/menu.png";
 import SettingIcon from "@/assets/icons/setting.png";
 import UserIcon from "@/assets/icons/user.png";
 import { useLanguage } from "@/context/LanguageContextProvider";
-import { useModalContext } from "@/context/ModalContextProvider";
+import { useModalStore } from "@/store/modalStore";
 
 import styles from "./Menu.module.css";
 
 export default function Menu() {
   const { t } = useLanguage();
-  const { handleModalOpen, setModalType } = useModalContext();
+  const openModal = useModalStore((state) => state.openModal);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleMenuOpen = (e) => {
@@ -22,8 +22,7 @@ export default function Menu() {
   const handleModalOpenWithType = (type) => (e) => {
     e.stopPropagation();
 
-    setModalType(type);
-    handleModalOpen();
+    openModal(type);
   };
 
   return (

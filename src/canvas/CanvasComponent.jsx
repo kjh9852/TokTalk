@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect } from "react";
 
-import { useModalContext } from "@/context/ModalContextProvider";
-import { useUserContext } from "@/context/UserContextProvider";
+import { useModalStore } from "@/store/modalStore";
+import { useUserStore } from "@/store/userStore";
 import { PointerLockControls, Sky } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
@@ -21,12 +21,11 @@ import Ground from "./Ground";
 
 const shadowOffset = 50;
 
-export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
-  const { isLock, setIsLock } = usePointerLock();
-  const { controlsRef } = useUserContext();
-  const { isOpen } = useModalContext();
+export default function CanvasComponent({ socket, nickname }) {
+  const { setIsLock } = usePointerLock();
+  const setControls = useUserStore((state) => state.setControls);
+  const isOpen = useModalStore((state) => state.isOpen);
   const players = usePlayerSocket(socket, nickname);
-  const localPlayerRef = useRef({});
 
   // 플레이어 업데이트 함수
   const handlePlayerUpdate = useCallback((state) => {
@@ -35,17 +34,8 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
 
   useEffect(() => {
     if (!socket) return;
-
     socket.emit("join", { nickname });
   }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      controlsRef.current.unlock();
-      controlsRef.current.isLocked = false;
-      controlsRef.current.enabled = false;
-    }
-  }, [isOpen]);
 
   return (
     <div id="container">
@@ -58,18 +48,20 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
         }}
         shadows
       >
+        {!isOpen && (
         <PointerLockControls
-          ref={controlsRef}
+            ref={(instance) => {
+              if (!instance) return;
+              setControls(instance);
+            }}
           onLock={() => {
-            controlsRef.current.enabled = true;
             setIsLock(true);
           }}
           onUnlock={() => {
-            // isLock이 true일 때만 실행
-            controlsRef.current.enabled = false;
             setIsLock(false);
           }}
         />
+        )}
 
         <Sky sunPosition={[-500, 50, -100]} />
         <ambientLight intensity={1.5} />
@@ -98,8 +90,6 @@ export default function CanvasComponent({ socket, nickname, isPointerLocked }) {
                 isTyping={state.isTyping}
                 message={state.currentMessage}
                 nickname={state.nickname ?? "익명"}
-                ref={localPlayerRef.current[id]}
-                isPointerLocked={isLock}
                 socket={socket}
                 players={players}
               />

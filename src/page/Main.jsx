@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useLanguage } from "@/context/LanguageContextProvider";
+import { useModalStore } from "@/store/modalStore";
 import { useProgress } from "@react-three/drei";
 
 import CanvasComponent from "@/canvas/CanvasComponent";
@@ -10,14 +11,8 @@ import LoadingScreen from "@/components/ui/Loading/LoadingScreen";
 import Menu from "@/components/ui/Menu/Menu";
 import Modal from "@/components/ui/Modal/Modal";
 
-export default function Main({
-  socket,
-  nickname,
-  setNickname,
-  userCount,
-  isPointerLocked,
-  setIsPointerLocked,
-}) {
+export default function Main({ socket, nickname, setNickname, userCount }) {
+  const isOpen = useModalStore((state) => state.isOpen);
   const [load, setLoad] = useState(false);
   const { progress } = useProgress();
   const { t } = useLanguage();
@@ -47,18 +42,15 @@ export default function Main({
             <span>{`${t.userCount} : ${userCount}`}</span>
           </div>
           <Menu />
-          <Modal
-            socket={socket}
-            onSetNickName={setNickname}
-            defaultValue={nickname}
-          />
           <ChattingView socket={socket} nickname={nickname} />
-          <CanvasComponent
-            socket={socket}
-            nickname={nickname}
-            isPointerLocked={isPointerLocked}
-            setIsPointerLocked={setIsPointerLocked}
-          />
+          <CanvasComponent socket={socket} nickname={nickname} />
+          {isOpen && (
+            <Modal
+              socket={socket}
+              onSetNickName={setNickname}
+              defaultValue={nickname}
+            />
+          )}
         </div>
       )}
     </>

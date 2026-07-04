@@ -2,16 +2,18 @@ import { useEffect } from "react";
 
 import woodTexture from "@/assets/images/wood.png";
 import { useAdmin } from "@/context/AdminContext";
-import { useModalContext } from "@/context/ModalContextProvider";
+import { useModalStore } from "@/store/modalStore";
+import { useUserStore } from "@/store/userStore";
 import { Text, useGLTF, useTexture } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 
-export default function Signpost({ controlsRef }) {
+export default function Signpost() {
   const { scene } = useGLTF("/models/signs.glb");
   const { isAdmin } = useAdmin();
   const texture = useTexture(woodTexture);
-  const { setModalType, handleModalOpen } = useModalContext();
+  const openModal = useModalStore((state) => state.openModal);
+  const controls = useUserStore((state) => state.controls);
 
   useEffect(() => {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -26,15 +28,10 @@ export default function Signpost({ controlsRef }) {
   }, [scene, texture]);
 
   const handlePostModalOpen = (type) => {
-    if (controlsRef.current) {
-      document.exitPointerLock();
-      controlsRef.current.unlock?.();
-    }
     setTimeout(() => {
-      setModalType(type);
-      console.log(document.pointerLockElement === null);
-      handleModalOpen();
-    }, 50);
+      controls.unlock();
+      openModal(type);
+    }, 0);
   };
 
   return (

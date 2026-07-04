@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-import { useUserContext } from "../context/UserContextProvider";
+import { useUserStore } from "@/store/userStore";
 
 export default function usePointerLock() {
-  const { isLock, setIsLock } = useUserContext();
+  const { isLock, setIsLock } = useUserStore();
 
   useEffect(() => {
     const handlePointerLockChange = () => {

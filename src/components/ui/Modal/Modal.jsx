@@ -2,9 +2,9 @@ import { useState } from "react";
 
 import CloseIcon from "@/assets/icons/close.png";
 import { useLanguage } from "@/context/LanguageContextProvider";
-import { useModalContext } from "@/context/ModalContextProvider";
 import { usePosts } from "@/context/PostContext";
-import { useUserContext } from "@/context/UserContextProvider";
+import { useModalStore } from "@/store/modalStore";
+import { useUserStore } from "@/store/userStore";
 
 import NickNameForm from "@/components/form/NickNameForm";
 import PostForm from "@/components/form/PostForm";
@@ -16,12 +16,13 @@ import styles from "./Modal.module.css";
 export default function Modal({ socket, onSetNickName, defaultValue }) {
   const { t } = useLanguage();
   const { addPost } = usePosts();
-  const { isOpen, modalType, handleModalClose } = useModalContext();
-  const { controlsRef } = useUserContext();
+  const isOpen = useModalStore((state) => state.isOpen);
+  const closeModal = useModalStore((state) => state.closeModal);
+  const modalType = useModalStore((state) => state.modalType);
+  const controls = useUserStore((state) => state.controls);
+
   const [userName, setUserName] = useState(defaultValue);
   const [content, setContent] = useState("");
-
-  const canvas = document.getElementById("canvas");
 
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);
@@ -31,13 +32,15 @@ export default function Modal({ socket, onSetNickName, defaultValue }) {
     setContent(e.target.value);
   };
 
+  const handleModalClose = () => {
+    closeModal();
+    controls?.lock();
+  };
+
   const handleFormClose = (e) => {
     e.preventDefault();
-    handleModalClose();
-    console.log(document.pointerLockElement === null);
-    requestAnimationFrame(() => {
-      controlsRef.current?.lock();
-    });
+    closeModal();
+    controls?.lock();
   };
 
   const updateNicknameState = () => {
@@ -53,7 +56,6 @@ export default function Modal({ socket, onSetNickName, defaultValue }) {
   };
 
   const handleNicknameSubmit = (e) => {
-    console.log("닉네임 변경");
     handleFormClose(e);
     updateNicknameState();
     emitNicknameToSocket(userName);
@@ -62,13 +64,6 @@ export default function Modal({ socket, onSetNickName, defaultValue }) {
   const handlePostSubmit = (e) => {
     handleFormClose(e);
     submitPost(content, userName);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      console.log("엔터감지");
-      controlsRef.current?.lock();
-    }
   };
 
   return (
