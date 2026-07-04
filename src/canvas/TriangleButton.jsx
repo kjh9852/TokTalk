@@ -4,11 +4,11 @@ export default function TriangleButton({ type = "prev", onClick }) {
   const buttonType = {
     prev: {
       rotation: -Math.PI / 2,
-      position: [8.2, 1, 4.5],
+      position: [9, 1, 3.85],
     },
     next: {
       rotation: Math.PI / 2,
-      position: [6.5, 1, 5.5],
+      position: [7, 1, 3.85],
     },
   };
 
@@ -35,11 +35,10 @@ export default function TriangleButton({ type = "prev", onClick }) {
       onPointerOut={(e) => e.object.material.color.set("lime")}
       scale={[0.15, 0.15, 0.15]}
       position={buttonType[type].position}
-      rotation-y={Math.PI / 6}
       rotation-z={buttonType[type].rotation}
     >
       <extrudeGeometry args={[shape, extrudeSettings]} />
-      <meshStandardMaterial side={THREE.DoubleSide} />
+      <meshStandardMaterial side={THREE.DoubleSide} color="lime" />
     </mesh>
   );
 }
