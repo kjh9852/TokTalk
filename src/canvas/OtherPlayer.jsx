@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
@@ -72,7 +72,7 @@ export default function OtherPlayer({
       type={"kinematicPosition"}
       ref={playerRef}
       lockRotations
-      position={position ?? [0, 11, 0]}
+      position={position ?? [0, 5, 0]}
     >
       <CapsuleCollider args={[0.2, 0.4]} />
       <PlayerModel
