@@ -1,12 +1,15 @@
 import { useEffect, useRef } from "react";
 
+import { useUserStore } from "@/store/userStore";
+import { isWithDistance } from "@/utils/distance";
 import { useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 
 import TriangleButton from "@/canvas/TriangleButton";
 
 export default function Board({ onPostNext, onPostPrev }) {
-  const { scene } = useGLTF("/models/boardbake.glb");
+  const { scene } = useGLTF("/models/board.glb");
+  const myPosition = useUserStore((state) => state.myPosition);
   const boardRef = useRef();
 
   useEffect(() => {
@@ -20,20 +23,30 @@ export default function Board({ onPostNext, onPostPrev }) {
 
   return (
     <>
-      <RigidBody
-        type="fixed"
-        ref={boardRef}
-        position={[12.93, 0, 1.93]}
-        rotation={[0, -Math.PI / 3, 0]}
-      >
+      <RigidBody type="fixed" ref={boardRef} position={[8, 0, 4]}>
         <group>
-          <primitive object={scene} scale={[-0.13, 0.13, 0.16]} />
+          <primitive object={scene} />
         </group>
       </RigidBody>
-      <TriangleButton onClick={onPostPrev} />
-      <TriangleButton onClick={onPostNext} type="next" />
+      <TriangleButton
+        onClick={() => {
+          if (!isWithDistance(myPosition, { x: 8, z: 4 }, 5)) {
+            return;
+          }
+          onPostPrev();
+        }}
+      />
+      <TriangleButton
+        onClick={() => {
+          if (!isWithDistance(myPosition, { x: 8, z: 4 }, 5)) {
+            return;
+          }
+          onPostNext();
+        }}
+        type="next"
+      />
     </>
   );
 }
 
-useGLTF.preload("/models/boardbake.glb");
+useGLTF.preload("/models/board.glb");

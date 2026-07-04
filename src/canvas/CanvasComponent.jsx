@@ -49,18 +49,18 @@ export default function CanvasComponent({ socket, nickname }) {
         shadows
       >
         {!isOpen && (
-        <PointerLockControls
+          <PointerLockControls
             ref={(instance) => {
               if (!instance) return;
               setControls(instance);
             }}
-          onLock={() => {
-            setIsLock(true);
-          }}
-          onUnlock={() => {
-            setIsLock(false);
-          }}
-        />
+            onLock={() => {
+              setIsLock(true);
+            }}
+            onUnlock={() => {
+              setIsLock(false);
+            }}
+          />
         )}
 
         <Sky sunPosition={[-500, 50, -100]} />
@@ -78,8 +78,8 @@ export default function CanvasComponent({ socket, nickname }) {
         <Physics gravity={[0, -30, 0]}>
           <Wall />
           <Ground />
-          <Post isEdit={isPointerLocked} />
-          <Signpost controlsRef={controlsRef} />
+          <Post />
+          <Signpost />
           {Object.entries(players).map(([id, state]) => {
             const isLocal = id === socket.id;
             return isLocal ? (
@@ -113,7 +113,7 @@ export default function CanvasComponent({ socket, nickname }) {
             </mesh>
           </RigidBody>
           <RigidBody type="fixed" mass={1000}>
-            <group position={[3, 0.58, 0]}>
+            <group position={[11.5, 0.9, 3]} rotation={[0, 2, 0]}>
               <Yeti />
             </group>
           </RigidBody>

@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import woodTexture from "@/assets/images/wood.png";
 import { useAdmin } from "@/context/AdminContext";
 import { useModalStore } from "@/store/modalStore";
 import { useUserStore } from "@/store/userStore";
+import { isWithDistance } from "@/utils/distance";
 import { Text, useGLTF, useTexture } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
@@ -14,6 +15,9 @@ export default function Signpost() {
   const texture = useTexture(woodTexture);
   const openModal = useModalStore((state) => state.openModal);
   const controls = useUserStore((state) => state.controls);
+  const myPosition = useUserStore((state) => state.myPosition);
+
+  const cloneScene = useMemo(() => scene.clone(), [scene]);
 
   useEffect(() => {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -38,10 +42,17 @@ export default function Signpost() {
     <>
       <RigidBody
         type="fixed"
-        position={[3, 0, 6]}
+        position={[3.5, 0, 4]}
         rotation={[0, Math.PI / 2, 0]}
       >
-        <group onClick={() => handlePostModalOpen("post")}>
+        <group
+          onClick={() => {
+            if (!isWithDistance(myPosition, { x: 3.5, z: 4 }, 2.5)) {
+              return;
+            }
+            handlePostModalOpen("post");
+          }}
+        >
           <primitive object={scene} scale={[0.4, 0.4, 0.4]} />
           <Text
             position={[0, 1.3, 0]}
@@ -56,11 +67,18 @@ export default function Signpost() {
       {isAdmin && (
         <RigidBody
           type="fixed"
-          position={[1, 0, 6]}
+          position={[1.5, 0, 4]}
           rotation={[0, Math.PI / 2, 0]}
         >
-          <group onClick={() => handlePostModalOpen("postedit")}>
-            <primitive object={scene.clone()} scale={[0.4, 0.4, 0.4]} />
+          <group
+            onClick={() => {
+              if (!isWithDistance(myPosition, { x: 1.5, z: 4 }, 2.5)) {
+                return;
+              }
+              handlePostModalOpen("postedit");
+            }}
+          >
+            <primitive object={cloneScene} scale={[0.4, 0.4, 0.4]} />
             <Text
               position={[0, 1.3, 0]}
               rotation={[0, Math.PI / 2, 0]}
