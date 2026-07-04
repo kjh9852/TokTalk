@@ -8,7 +8,6 @@ const socket = io.connect("https://toktalkserver.onrender.com");
 
 function App() {
   const [userCount, setUserCount] = useState("");
-  const [isPointerLocked, setIsPointerLocked] = useState(false);
   const [nickname, setNickname] = useState("익명");
 
   useEffect(() => {
@@ -27,8 +26,6 @@ function App() {
         socket={socket}
         nickname={nickname}
         setNickname={setNickname}
-        isPointerLocked={isPointerLocked}
-        setIsPointerLocked={setIsPointerLocked}
       />
     </div>
   );
