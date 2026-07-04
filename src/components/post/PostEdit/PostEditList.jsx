@@ -25,7 +25,7 @@ export default function PostEditList() {
   return (
     <div className={styles.container}>
       {postList.map((post) => (
-        <div className={styles.list}>
+        <div key={post.id} className={styles.list}>
           <div className={styles.card}>
             <p className={styles.text}>{post.content}</p>
             <p className={styles.text}>{`작성자 : ${post.userName}`}</p>

@@ -7,7 +7,7 @@ export default function Pagination({ currentPage, totalPage, onPageClick }) {
         {Array.from({ length: totalPage }, (_, index) => {
           const page = index + 1;
           return (
-            <li className={styles.pageList}>
+            <li key={index} className={styles.pageList}>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
