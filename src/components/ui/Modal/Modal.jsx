@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import CloseIcon from "@/assets/icons/close.png";
 import { useLanguage } from "@/context/LanguageContextProvider";
-import { usePosts } from "@/context/PostContext";
+import { useAddPost } from "@/queries/useAddPost";
 import { useModalStore } from "@/store/modalStore";
 import { useUserStore } from "@/store/userStore";
 
@@ -15,7 +15,7 @@ import styles from "./Modal.module.css";
 
 export default function Modal({ socket, onSetNickName, defaultValue }) {
   const { t } = useLanguage();
-  const { addPost } = usePosts();
+  const { mutate: addPost } = useAddPost();
   const isOpen = useModalStore((state) => state.isOpen);
   const closeModal = useModalStore((state) => state.closeModal);
   const modalType = useModalStore((state) => state.modalType);
@@ -37,8 +37,7 @@ export default function Modal({ socket, onSetNickName, defaultValue }) {
     controls?.lock();
   };
 
-  const handleFormClose = (e) => {
-    e.preventDefault();
+  const closeForm = (e) => {
     closeModal();
     controls?.lock();
   };
@@ -51,19 +50,26 @@ export default function Modal({ socket, onSetNickName, defaultValue }) {
     socket.emit("nicknameUpdate", { nickname });
   };
 
-  const submitPost = (content, userName) => {
-    addPost(content, userName);
-  };
-
   const handleNicknameSubmit = (e) => {
-    handleFormClose(e);
+    e.preventDefault();
+
     updateNicknameState();
     emitNicknameToSocket(userName);
+
+    closeForm();
   };
 
   const handlePostSubmit = (e) => {
-    handleFormClose(e);
-    submitPost(content, userName);
+    e.preventDefault();
+
+    addPost(
+      { content, userName },
+      {
+        onSuccess: () => {
+          closeForm();
+        },
+      },
+    );
   };
 
   return (
