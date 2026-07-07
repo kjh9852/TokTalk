@@ -4,7 +4,6 @@ import DeleteIcon from "@/assets/icons/close.png";
 import { useDeletePost } from "@/queries/useDeletePost";
 import { useGetPosts } from "@/queries/useGetPosts";
 import { useTotalPage } from "@/queries/useTotalPage";
-import { pageStore } from "@/store/pageStore";
 
 import Pagination from "./Pagination";
 import styles from "./PostEditList.module.css";
