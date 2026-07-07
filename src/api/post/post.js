@@ -52,7 +52,7 @@ export async function getPost({ pageSize = 6, startDoc = null }) {
   const snapShot = await getDocs(q);
 
   const posts = snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  const lastDoc = snapShot.docs[snapShot.docs.length - 1];
+  const lastDoc = snapShot.docs[snapShot.docs.length - 1] ?? null;
 
   return { posts, lastDoc };
 }
