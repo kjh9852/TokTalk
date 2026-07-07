@@ -1,17 +1,19 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ReactDOM from "react-dom/client";
 
 import App from "./App.jsx";
 import AdminContextProvider from "./context/AdminContext.jsx";
 import LanguageProvider from "./context/LanguageContextProvider.jsx";
-import PostContextProdiver from "./context/PostContext.jsx";
 import "./index.css";
 
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <PostContextProdiver>
+  <QueryClientProvider client={queryClient}>
     <AdminContextProvider>
       <LanguageProvider>
         <App />
       </LanguageProvider>
     </AdminContextProvider>
-  </PostContextProdiver>,
+  </QueryClientProvider>,
 );
