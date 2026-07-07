@@ -5,24 +5,23 @@ import { useTotalPage } from "@/queries/useTotalPage.js";
 
 import Board from "@/canvas/Board.jsx";
 
-import PostList from "./PostList/PostList.jsx";
+import PostList from "@/components/post/PostList/PostList";
+import LoadingSpinner from "@/components/ui/Loading/LoadingSpinner";
 
 export default function Post() {
   const [pageDocs, setPageDocs] = useState([null]);
   const [page, setPage] = useState(1);
-  const { data } = useGetPosts(page, pageDocs);
+  const { data, isPending } = useGetPosts(page, pageDocs);
   const { data: totalPage } = useTotalPage();
   const posts = data?.posts ?? [];
 
   const handleNextPage = () => {
     if (page >= totalPage) return;
-
     setPage((prev) => prev + 1);
   };
 
   const handlePrevPage = () => {
     if (page <= 1) return;
-
     setPage((prev) => prev - 1);
   };
 
@@ -38,6 +37,7 @@ export default function Post() {
   return (
     <>
       <PostList postList={posts} />
+      {isPending && <LoadingSpinner />}
       <Board onPostNext={handleNextPage} onPostPrev={handlePrevPage} />
     </>
   );

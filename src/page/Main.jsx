@@ -13,20 +13,19 @@ import Modal from "@/components/ui/Modal/Modal";
 
 export default function Main({ socket, nickname, setNickname, userCount }) {
   const isOpen = useModalStore((state) => state.isOpen);
-  const [load, setLoad] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const { progress } = useProgress();
   const { t } = useLanguage();
 
   useEffect(() => {
-    if (progress >= 100) {
-      const timeout = setTimeout(() => setLoad(true), 1000);
-      return () => clearTimeout(timeout);
-    }
+    if (progress < 100) return;
+    const timeout = setTimeout(() => setIsLoaded(true), 1000);
+    return () => clearTimeout(timeout);
   }, [progress]);
 
   return (
     <>
-      {!load ? (
+      {!isLoaded ? (
         <LoadingScreen />
       ) : (
         <div style={{ height: "100%" }}>
