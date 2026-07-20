@@ -5,7 +5,7 @@ import { isWithDistance } from "@/utils/distance";
 import { useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 
-import TriangleButton from "@/canvas/TriangleButton";
+import TriangleButton from "@/canvas/world/TriangleButton";
 
 export default function Board({ onPostNext, onPostPrev }) {
   const { scene } = useGLTF("/models/board.glb");

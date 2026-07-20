@@ -6,10 +6,10 @@ import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody, useRapier } from "@react-three/rapier";
 import * as THREE from "three";
 
-import { usePersonControls } from "@/hooks/usePersonControls";
 import usePointerLock from "@/hooks/usePointerLock";
 
-import PlayerModel from "@/canvas/PlayerModel";
+import PlayerModel from "@/canvas/player/PlayerModel";
+import { usePersonControls } from "@/canvas/player/hooks/usePersonControls";
 
 const MOVE_SPEED = 4;
 const direction = new THREE.Vector3();
@@ -140,7 +140,6 @@ export default function Player({
     if (!playerRef.current) return;
 
     const velocity = playerRef.current.linvel();
-    // console.log(velocity.x, velocity.z);
 
     // 방향 계산
     frontVector.set(0, 0, backward - forward);

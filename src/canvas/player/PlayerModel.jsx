@@ -10,6 +10,8 @@ import {
 import * as THREE from "three";
 import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 
+const DEFAULT_CHATBOX_SIZE = [0.12, 0.175];
+
 export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
   const { scene, animations } = useGLTF("/models/pinkbin.glb");
   const { actions, ref } = useAnimations(animations);
@@ -24,8 +26,6 @@ export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
       : message.length > 20
         ? `${message.slice(0, 20)} ...`
         : message;
-
-  const DEFAULT_CHATBOX_SIZE = [0.12, 0.175];
 
   useEffect(() => {
     if (!chatRef.current || !message) {
@@ -123,3 +123,5 @@ export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
     </>
   );
 }
+
+useGLTF.preload("/models/pinkbin.glb");

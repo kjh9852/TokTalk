@@ -4,7 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 
-import PlayerModel from "@/canvas/PlayerModel";
+import PlayerModel from "@/canvas/player/PlayerModel";
 
 export default function OtherPlayer({
   position,

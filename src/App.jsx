@@ -1,27 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { io } from "socket.io-client";
 
+import useSocketStatus from "@/hooks/useSocketStatus";
+
 import Main from "./page/Main";
 
-const socket = io.connect("https://toktalkserver.onrender.com");
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 function App() {
-  const [userCount, setUserCount] = useState("");
+  const { userCount, isSocketConnected } = useSocketStatus(socket);
   const [nickname, setNickname] = useState("익명");
-
-  useEffect(() => {
-    socket.on("playerCount", (count) => {
-      setUserCount(count);
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, [socket]);
 
   return (
     <div className="container">
       <Main
+        isSocketConnected={isSocketConnected}
         userCount={userCount}
         socket={socket}
         nickname={nickname}

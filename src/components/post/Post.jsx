@@ -6,7 +6,7 @@ import { Text } from "@react-three/drei";
 
 import { useNewPostNotification } from "@/hooks/useNewPostNotification";
 
-import Board from "@/canvas/Board.jsx";
+import Board from "@/canvas/world/Board.jsx";
 
 import PostList from "@/components/post/PostList/PostList";
 import LoadingSpinner from "@/components/ui/Loading/LoadingSpinner";

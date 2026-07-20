@@ -42,7 +42,6 @@ export default function usePlayerSocket(socket) {
         ...prev,
         [id]: { ...prev[id], isTyping: true },
       }));
-      console.log(id);
     };
 
     const handlePlayerStopTyping = ({ id }) => {
