@@ -12,13 +12,10 @@ import ModelLoader from "@/canvas/loader/ModelLoader";
 import PhysicsWorld from "@/canvas/physics/PhysicsWorld";
 import PlayerManager from "@/canvas/player/PlayerManager";
 import usePlayerSocket from "@/canvas/player/hooks/usePlayerSocket";
-import Ground from "@/canvas/world/Ground";
-import Signpost from "@/canvas/world/Signpost";
-import Wall from "@/canvas/world/Wall";
-import World from "@/canvas/world/World";
-import Yeti from "@/canvas/world/Yeti";
 
 import Post from "@/components/post/Post";
+
+import { Ground, Signpost, Wall, World, Yeti } from "./world";
 
 export default function CanvasComponent({ socket, nickname, onModelLoaded }) {
   const { setIsLock } = usePointerLock();
