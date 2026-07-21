@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 
-export const usePersonControls = (isPointerLocked) => {
-  const keys = {
-    KeyW: "forward",
-    KeyS: "backward",
-    KeyA: "left",
-    KeyD: "right",
-    KeyE: "push",
-    Space: "jump",
-    ShiftLeft: "run",
-  };
+const MAX_PITCH = Math.PI / 2 - 0.1;
+const MIN_PITCH = -MAX_PITCH;
 
-  const MAX_PITCH = Math.PI / 2 - 0.1;
-  const MIN_PITCH = -MAX_PITCH;
+const keys = {
+  KeyW: "forward",
+  KeyS: "backward",
+  KeyA: "left",
+  KeyD: "right",
+  KeyE: "push",
+  Space: "jump",
+  ShiftLeft: "run",
+};
 
-  const moveFileByKey = (key) => keys[key];
-
+export const usePersonControls = () => {
+  const moveFieldByKey = (key) => keys[key];
+  const isTyping = ["INPUT", "TEXTAREA"].includes(
+    document.activeElement?.tagName,
+  );
   const [movement, setMovement] = useState({
     forward: false,
     backward: false,
@@ -35,29 +37,20 @@ export const usePersonControls = (isPointerLocked) => {
 
   useEffect(() => {
     const handleKeyDown = (ev) => {
-      if (
-        document.activeElement.tagName === "INPUT" ||
-        document.activeElement.tagName === "TEXTAREA"
-      ) {
+      if (isTyping) {
         return;
       }
-
-      setMovementStatus(moveFileByKey(ev.code), true);
+      setMovementStatus(moveFieldByKey(ev.code), true);
     };
+
     const handleKeyUp = (ev) => {
-      if (
-        document.activeElement.tagName === "INPUT" ||
-        document.activeElement.tagName === "TEXTAREA"
-      ) {
+      if (isTyping) {
         return;
       }
-
-      setMovementStatus(moveFileByKey(ev.code), false);
+      setMovementStatus(moveFieldByKey(ev.code), false);
     };
 
     const handleMouseMove = (e) => {
-      if (isPointerLocked) return;
-
       setMovement((m) => {
         let nextPitch = m.pitch - e.movementY * 0.002;
         nextPitch = Math.max(MIN_PITCH, Math.min(MAX_PITCH, nextPitch));
@@ -78,7 +71,7 @@ export const usePersonControls = (isPointerLocked) => {
       document.removeEventListener("keyup", handleKeyUp);
       document.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [isTyping]);
 
   return movement;
 };

@@ -69,7 +69,7 @@ export default function OtherPlayer({
     <RigidBody
       colliders={false}
       mass={1}
-      type={"kinematicPosition"}
+      type="kinematicPosition"
       ref={playerRef}
       lockRotations
       position={position ?? [0, 5, 0]}
