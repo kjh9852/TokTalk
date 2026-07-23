@@ -7,26 +7,26 @@ export default function usePlayerSocket(socket) {
   useEffect(() => {
     if (!socket) return;
 
-    const handleCurrentPlayers = (currentPlayers) => {
-      setPlayers(currentPlayers);
-    };
-
-    const handleNewPlayer = ({ id, state }) => {
-      setPlayers((prev) => ({ ...prev, [id]: state }));
-    };
-
-    const handleUpdatePlayer = ({ id, state }) => {
-      setPlayers((prev) => ({ ...prev, [id]: state }));
-    };
-
-    const handleNicknameUpdate = ({ id, nickname }) => {
+    const updatePlayer = (id, data) => {
       setPlayers((prev) => ({
         ...prev,
         [id]: {
           ...prev[id],
-          nickname,
+          ...data,
         },
       }));
+    };
+
+    const handleCurrentPlayers = (currentPlayers) => {
+      setPlayers(currentPlayers);
+    };
+
+    const handlePlayerStatus = ({ id, state }) => {
+      setPlayers((prev) => ({ ...prev, [id]: state }));
+    };
+
+    const handleNicknameUpdate = ({ id, nickname }) => {
+      updatePlayer(id, { nickname });
     };
 
     const handleRemovePlayer = (id) => {
@@ -38,17 +38,11 @@ export default function usePlayerSocket(socket) {
     };
 
     const handlePlayerTyping = ({ id }) => {
-      setPlayers((prev) => ({
-        ...prev,
-        [id]: { ...prev[id], isTyping: true },
-      }));
+      updatePlayer(id, { isTyping: true });
     };
 
     const handlePlayerStopTyping = ({ id }) => {
-      setPlayers((prev) => ({
-        ...prev,
-        [id]: { ...prev[id], isTyping: false },
-      }));
+      updatePlayer(id, { isTyping: false });
     };
 
     const handleReceiveMessage = ({ id, message }) => {
@@ -72,8 +66,8 @@ export default function usePlayerSocket(socket) {
     };
 
     socket.on("currentPlayers", handleCurrentPlayers);
-    socket.on("newPlayer", handleNewPlayer);
-    socket.on("updatePlayer", handleUpdatePlayer);
+    socket.on("newPlayer", handlePlayerStatus);
+    socket.on("updatePlayer", handlePlayerStatus);
     socket.on("removePlayer", handleRemovePlayer);
     socket.on("nicknameUpdate", handleNicknameUpdate);
     socket.on("typing", handlePlayerTyping);
@@ -83,8 +77,8 @@ export default function usePlayerSocket(socket) {
 
     return () => {
       socket.off("currentPlayers", handleCurrentPlayers);
-      socket.off("newPlayer", handleNewPlayer);
-      socket.off("updatePlayer", handleUpdatePlayer);
+      socket.off("newPlayer", handlePlayerStatus);
+      socket.off("updatePlayer", handlePlayerStatus);
       socket.off("removePlayer", handleRemovePlayer);
       socket.off("nicknameUpdate", handleNicknameUpdate);
       socket.off("typing", handlePlayerTyping);
