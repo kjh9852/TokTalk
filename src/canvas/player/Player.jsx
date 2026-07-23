@@ -1,6 +1,8 @@
 import { useRef } from "react";
 
+import { mobileControlStore } from "@/store/mobileControlsStore";
 import { useUserStore } from "@/store/userStore";
+import { isMobile } from "@/utils/device";
 import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody, useRapier } from "@react-three/rapier";
 import * as THREE from "three";
@@ -34,8 +36,9 @@ export default function Player({
 }) {
   const playerRef = useRef();
   const lastSentRef = useRef(0);
-  const { forward, backward, left, right, jump, run, yaw, pitch, push } =
-    usePersonControls();
+  const mobileMove = mobileControlStore((state) => state.mobileMove);
+  const mobileLook = mobileControlStore((state) => state.mobileLook);
+  const movement = usePersonControls();
   const setMyPosition = useUserStore((state) => state.setMyPosition);
   const { isLock } = usePointerLock();
   const prevPushRef = useRef(false);
@@ -45,11 +48,25 @@ export default function Player({
     onUpdate,
   });
 
+  const playerInput = isMobile
+    ? {
+        ...mobileMove,
+        ...mobileLook,
+        jump: movement.jump,
+        run: movement.run,
+        push: movement.push,
+      }
+    : movement;
+
   const pushCooldownRef = useRef(0);
   const isJumpingRef = useRef(false);
   const jumpCountRef = useRef(2);
 
-  const isMoving = forward || backward || left || right;
+  const isMoving =
+    playerInput.forward ||
+    playerInput.backward ||
+    playerInput.left ||
+    playerInput.right;
 
   const rapier = useRapier();
 
@@ -64,18 +81,19 @@ export default function Player({
     const velocity = playerRef.current.linvel();
 
     // 방향 계산
-    frontVector.set(0, 0, backward - forward);
-    sideVector.set(left - right, 0, 0);
+    frontVector.set(0, 0, playerInput.backward - playerInput.forward);
+    sideVector.set(playerInput.left - playerInput.right, 0, 0);
     direction.set(0, 0, 0);
 
     if (isLock) {
       if (isMoving && !isKnockback) {
-        const CURRENT_SPEED = run ? MOVE_SPEED * 1.8 : MOVE_SPEED;
+        console.log("move!");
+        const CURRENT_SPEED = playerInput.run ? MOVE_SPEED * 1.8 : MOVE_SPEED;
 
         direction
           .subVectors(frontVector, sideVector)
           .normalize()
-          .applyAxisAngle(UP_AXIS, yaw) // 캐릭터 회전 적용
+          .applyAxisAngle(UP_AXIS, playerInput.yaw) // 캐릭터 회전 적용
           .multiplyScalar(CURRENT_SPEED);
 
         playerRef.current.wakeUp();
@@ -87,7 +105,7 @@ export default function Player({
         });
       }
 
-      tempQuat.setFromEuler(tempEuler.set(0, yaw + Math.PI, 0));
+      tempQuat.setFromEuler(tempEuler.set(0, playerInput.yaw + Math.PI, 0));
 
       playerRef.current.setRotation(tempQuat);
 
@@ -96,17 +114,28 @@ export default function Player({
         rapier,
         jumpCountRef,
         isJumpingRef,
-        jump,
+        jump: playerInput.jump,
         doJump,
       });
 
-      if (push && !prevPushRef.current) {
-        handlePush({ pushCooldownRef, playerRef, players, socket, yaw });
+      if (playerInput.push && !prevPushRef.current) {
+        handlePush({
+          pushCooldownRef,
+          playerRef,
+          players,
+          socket,
+          yaw: playerInput.yaw,
+        });
       }
 
-      prevPushRef.current = push;
+      prevPushRef.current = playerInput.push;
 
-      updateCamera({ playerRef, camera: state.camera, yaw, pitch });
+      updateCamera({
+        playerRef,
+        camera: state.camera,
+        yaw: playerInput.yaw,
+        pitch: playerInput.pitch,
+      });
 
       const now = state.clock.getElapsedTime() * 1000;
 

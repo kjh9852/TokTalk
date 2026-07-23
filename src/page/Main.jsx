@@ -2,10 +2,12 @@ import { useState } from "react";
 
 import { useLanguage } from "@/context/LanguageContextProvider";
 import { useModalStore } from "@/store/modalStore";
+import { isMobile } from "@/utils/device";
 
 import CanvasComponent from "@/canvas/CanvasComponent";
 
 import ChattingView from "@/components/chat/ChattingView/ChattingView";
+import MobileController from "@/components/mobile/MobileController";
 import LoadingScreen from "@/components/ui/Loading/LoadingScreen";
 import Menu from "@/components/ui/Menu/Menu";
 import Modal from "@/components/ui/Modal/Modal";
@@ -49,6 +51,7 @@ export default function Main({
         nickname={nickname}
         onModelLoaded={() => setIsModelLoaded(true)}
       />
+      {isMobile && <MobileController />}
       {isOpen && (
         <Modal
           socket={socket}
