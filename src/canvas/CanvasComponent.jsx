@@ -2,6 +2,7 @@ import { Suspense, useCallback, useEffect } from "react";
 
 import { useModalStore } from "@/store/modalStore";
 import { useUserStore } from "@/store/userStore";
+import { isMobile } from "@/utils/device";
 import { PointerLockControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
@@ -22,6 +23,8 @@ export default function CanvasComponent({ socket, nickname, onModelLoaded }) {
   const setControls = useUserStore((state) => state.setControls);
   const isOpen = useModalStore((state) => state.isOpen);
   const players = usePlayerSocket(socket, nickname);
+
+  const shouldUsePointerLock = !isOpen && !isMobile;
 
   // 플레이어 업데이트 함수
   const handlePlayerUpdate = useCallback(
@@ -49,7 +52,7 @@ export default function CanvasComponent({ socket, nickname, onModelLoaded }) {
       >
         <Suspense fallback={null}>
           <ModelLoader onLoaded={onModelLoaded} />
-          {!isOpen && (
+          {shouldUsePointerLock && (
             <PointerLockControls
               ref={(instance) => {
                 if (!instance) return;
