@@ -36,7 +36,9 @@ export default function Main({
           zIndex: 99,
         }}
       >
-        <span>{`${t.userCount} : ${userCount}`}</span>
+        <span
+          style={{ fontSize: "14px" }}
+        >{`${t.userCount} : ${userCount}`}</span>
       </div>
       <Menu />
       <ChattingView socket={socket} nickname={nickname} />
@@ -51,7 +53,7 @@ export default function Main({
         nickname={nickname}
         onModelLoaded={() => setIsModelLoaded(true)}
       />
-      {isMobile && <MobileController />}
+      {isMobile && <MobileController socket={socket} />}
       {isOpen && (
         <Modal
           socket={socket}

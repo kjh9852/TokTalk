@@ -16,7 +16,9 @@
   border: none;
   border-radius: 8px;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 16px;
+  color: #000;
+  background: #fff;
 }
 
 .error {

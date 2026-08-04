@@ -1,11 +1,13 @@
-import MobileJoystick from "@/components/mobile/MobileJoystick";
-import TouchLookArea from "@/components/mobile/TouchLookArea";
+import MobileJoystick from "./MobileJoystick";
+import TouchLookArea from "./TouchLookArea";
+import MobileChat from "./chat/MobileChat";
 
-export default function MobileController() {
+export default function MobileController({ socket }) {
   return (
     <>
       <MobileJoystick />
       <TouchLookArea />
+      <MobileChat socket={socket} />
     </>
   );
 }

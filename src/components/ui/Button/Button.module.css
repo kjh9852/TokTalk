@@ -6,12 +6,14 @@
   border-radius: 8px;
   font-weight: 300;
   font-size: 16px;
+  color: #000;
   background: #62ff74;
   cursor: pointer;
 }
 
 .disabled {
   background: #ededed;
+  color: #999;
 }
 
 .large {
@@ -20,4 +22,13 @@
 
 .small {
   width: 100px;
+}
+
+.mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 6px;
 }

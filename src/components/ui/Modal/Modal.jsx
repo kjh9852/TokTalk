@@ -37,7 +37,7 @@ export default function Modal({ socket, onSetNickName, defaultValue }) {
     controls?.lock();
   };
 
-  const closeForm = (e) => {
+  const closeForm = () => {
     closeModal();
     controls?.lock();
   };

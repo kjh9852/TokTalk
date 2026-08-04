@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
+import submitIcon from "@/assets/icons/submit.png";
 import { useLanguage } from "@/context/LanguageContextProvider";
 import { useModalStore } from "@/store/modalStore";
+import { isMobile } from "@/utils/device";
 
 import Button from "@/components/ui/Button/Button";
 
@@ -17,18 +19,22 @@ export default function ChatInput({
   const chatRef = useRef(null);
   const { t } = useLanguage();
 
-  const handleEnterFocus = () => {
+  const handleEnterFocus = useCallback(() => {
     if (isOpen) return;
     if (document.pointerLockElement === null) return;
     chatRef.current.focus();
-  };
+  }, [isOpen]);
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
+  const handleKeyPress = useCallback(
+    (e) => {
+      if (e.key !== "Enter") return;
+      if (document.activeElement === chatRef.current) return;
+      e.preventDefault();
       setIsChatExpanded(true);
       handleEnterFocus();
-    }
-  };
+    },
+    [handleEnterFocus, setIsChatExpanded],
+  );
 
   const handleSubmit = (e) => {
     onSendMessage(e);
@@ -36,12 +42,12 @@ export default function ChatInput({
   };
 
   useEffect(() => {
-    document.addEventListener("keypress", handleKeyPress);
+    document.addEventListener("keydown", handleKeyPress);
 
     return () => {
-      document.removeEventListener("keypress", handleKeyPress);
+      document.removeEventListener("keydown", handleKeyPress);
     };
-  }, []);
+  }, [handleKeyPress]);
 
   return (
     <div className={styles.container}>
@@ -56,7 +62,17 @@ export default function ChatInput({
           placeholder={t.chat.message}
           disabled={isOpen}
         />
-        <Button type="small">{t.chat.button}</Button>
+        <Button type={isMobile ? "mobile" : "small"}>
+          {!isMobile ? (
+            t.chat.button
+          ) : (
+            <img
+              style={{ width: "20px", height: "20px" }}
+              src={submitIcon}
+              alt="전송"
+            />
+          )}
+        </Button>
       </form>
     </div>
   );
