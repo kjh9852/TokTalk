@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 import { getPost } from "@/api/post/post";
 
@@ -10,5 +10,6 @@ export function useGetPosts(page, pageDocs) {
       return getPost({ pageSize: 6, startDoc });
     },
     queryKey: ["posts", page],
+    placeholderData: keepPreviousData,
   });
 }

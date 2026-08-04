@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useGetPosts } from "@/queries/useGetPosts.js";
 import { useTotalPage } from "@/queries/useTotalPage.js";
@@ -14,11 +14,14 @@ import LoadingSpinner from "@/components/ui/Loading/LoadingSpinner";
 export default function Post() {
   const [pageDocs, setPageDocs] = useState([null]);
   const [page, setPage] = useState(1);
-  const { data, isPending, isFetching } = useGetPosts(page, pageDocs);
+  const { data, isPending, isFetching, isPlaceholderData } = useGetPosts(
+    page,
+    pageDocs,
+  );
   const { data: totalPage } = useTotalPage();
   const [initialLastestDate, setInitialLastestDate] = useState(null);
 
-  const posts = data?.posts ?? [];
+  const posts = useMemo(() => data?.posts ?? [], [data?.posts]);
 
   const lastestPost = useNewPostNotification();
 
@@ -50,12 +53,22 @@ export default function Post() {
       newArr[page] = data.lastDoc;
       return newArr;
     });
-  }, [data?.lastDoc]);
+  }, [data?.lastDoc, page]);
 
   return (
     <>
+      {isPending && !data && <LoadingSpinner />}
       <PostList postList={posts} />
-      {isPending && <LoadingSpinner />}
+      {isFetching && !isPlaceholderData && (
+        <Text
+          position={[8, 1, 3.904]}
+          rotation={[0, Math.PI, 0]}
+          fontSize={0.15}
+          color="white"
+        >
+          불러오는 중...
+        </Text>
+      )}
       {page !== 1 && hasNewPost && (
         <group position={[8, 3.8, 3.8]}>
           <Text fontSize={0.2} rotation={[0, -Math.PI, 0]}>
