@@ -1,16 +1,16 @@
-import { mobileControlStore } from "@/store/mobileControlsStore";
+import { useMobileControlStore } from "@/store/mobileControlsStore";
 import { Joystick } from "react-joystick-component";
 
 export default function MobileJoystick() {
-  const setMobileMove = mobileControlStore((state) => state.setMobileMove);
+  const setMobileMove = useMobileControlStore((state) => state.setMobileMove);
 
   return (
     <div
       style={{
         position: "fixed",
-        bottom: "100px",
+        bottom: "30px",
         left: "20px",
-        zIndex: "9999",
+        zIndex: "9",
       }}
     >
       <Joystick
@@ -33,7 +33,7 @@ export default function MobileJoystick() {
             right: false,
           });
         }}
-        size={100}
+        size={120}
         sticky={true}
         baseColor="#e2e2e2"
         stickColor="#919191"

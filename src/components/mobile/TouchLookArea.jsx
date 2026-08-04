@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-import { mobileControlStore } from "@/store/mobileControlsStore";
+import { useMobileControlStore } from "@/store/mobileControlsStore";
 
 export default function TouchLookArea() {
   const lookTouchId = useRef(null);
@@ -8,7 +8,7 @@ export default function TouchLookArea() {
     x: 0,
     y: 0,
   });
-  const setMobileRotation = mobileControlStore(
+  const setMobileRotation = useMobileControlStore(
     (state) => state.setMobileRotation,
   );
 

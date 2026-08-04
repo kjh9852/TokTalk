@@ -1,9 +1,11 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 import woodTexture from "@/assets/images/wood.png";
 import { useAdmin } from "@/context/AdminContext";
+import { useInteractionStore } from "@/store/interactionStore";
 import { useModalStore } from "@/store/modalStore";
 import { useUserStore } from "@/store/userStore";
+import { isMobile } from "@/utils/device";
 import { isWithDistance } from "@/utils/distance";
 import { Text, useGLTF, useTexture } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
@@ -16,7 +18,6 @@ export default function Signpost() {
   const openModal = useModalStore((state) => state.openModal);
   const controls = useUserStore((state) => state.controls);
   const myPosition = useUserStore((state) => state.myPosition);
-
   const cloneScene = useMemo(() => scene.clone(), [scene]);
 
   useEffect(() => {
@@ -31,12 +32,38 @@ export default function Signpost() {
     });
   }, [scene, texture]);
 
-  const handlePostModalOpen = (type) => {
-    setTimeout(() => {
-      controls.unlock();
-      openModal(type);
-    }, 0);
-  };
+  const handlePostModalOpen = useCallback(
+    (type) => {
+      setTimeout(() => {
+        if (!isMobile) {
+          controls.unlock();
+        }
+
+        openModal(type);
+      }, 0);
+    },
+    [openModal, controls],
+  );
+
+  useEffect(() => {
+    const { addInteractable, removeInteractable } =
+      useInteractionStore.getState();
+
+    addInteractable({
+      id: "sign-post",
+      icon: "write",
+      position: {
+        x: 3.5,
+        z: 4,
+      },
+      range: 2.5,
+      interact: () => {
+        openModal("post");
+      },
+    });
+
+    return () => removeInteractable("sign-post");
+  }, [openModal]);
 
   return (
     <>

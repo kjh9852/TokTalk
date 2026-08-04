@@ -1,3 +1,6 @@
+import { useInteractionStore } from "@/store/interactionStore";
+import { isWithDistance } from "@/utils/distance";
+
 export const syncPlayerState = ({
   now,
   playerRef,
@@ -16,6 +19,22 @@ export const syncPlayerState = ({
     y: playerPosition.y,
     z: playerPosition.z,
   });
+
+  const { currentInteractable, setInteractable, interactables } =
+    useInteractionStore.getState();
+
+  const target =
+    interactables.find((item) =>
+      isWithDistance(
+        { x: playerPosition.x, z: playerPosition.z },
+        item.position,
+        item.range,
+      ),
+    ) ?? null;
+
+  if (currentInteractable?.id !== target?.id) {
+    setInteractable(target);
+  }
 
   const newState = {
     position: [playerPosition.x, playerPosition.y, playerPosition.z],

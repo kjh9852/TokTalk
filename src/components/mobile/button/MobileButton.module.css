@@ -1,0 +1,62 @@
+.mobileButton {
+  position: absolute;
+  background: #d2d2d2;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: pointer;
+}
+
+.jump {
+  bottom: 110px;
+  right: 100px;
+}
+
+.jump img {
+  width: 28px;
+  height: 41px;
+}
+
+.run {
+  bottom: 25px;
+  right: 15px;
+}
+
+.run img {
+  width: 29px;
+  height: 39px;
+}
+
+.action {
+  bottom: 110px;
+  right: 15px;
+}
+
+.write {
+  width: 35px;
+  height: 35px;
+}
+
+.prev,
+.next {
+  width: 35px;
+  height: 29px;
+}
+
+.action:disabled {
+  background: #a2a2a2;
+}
+
+.push {
+  bottom: 25px;
+  right: 100px;
+}
+
+.push img {
+  width: 30px;
+  height: 30px;
+}

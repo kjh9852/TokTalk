@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { useInteractionStore } from "@/store/interactionStore";
 import { useUserStore } from "@/store/userStore";
 import { isWithDistance } from "@/utils/distance";
 import { useGLTF } from "@react-three/drei";
@@ -11,6 +12,8 @@ export default function Board({ onPostNext, onPostPrev }) {
   const { scene } = useGLTF("/models/board.glb");
   const myPosition = useUserStore((state) => state.myPosition);
   const boardRef = useRef();
+  const nextPageRef = useRef(onPostNext);
+  const prevPageRef = useRef(onPostPrev);
 
   useEffect(() => {
     scene.traverse((child) => {
@@ -20,6 +23,49 @@ export default function Board({ onPostNext, onPostPrev }) {
       }
     });
   }, [scene]);
+
+  useEffect(() => {
+    nextPageRef.current = onPostNext;
+    prevPageRef.current = onPostPrev;
+  }, [onPostNext, onPostPrev]);
+
+  useEffect(() => {
+    const { addInteractable, removeInteractable } =
+      useInteractionStore.getState();
+
+    addInteractable({
+      id: "board-prev",
+      icon: "prev",
+      position: {
+        x: 9,
+        z: 3.85,
+      },
+      range: 3,
+      interact: () => {
+        console.log("prev interact");
+        prevPageRef.current();
+      },
+    });
+
+    addInteractable({
+      id: "board-next",
+      icon: "next",
+      position: {
+        x: 7,
+        z: 3.85,
+      },
+      range: 3,
+      interact: () => {
+        console.log("next interact");
+        nextPageRef.current();
+      },
+    });
+
+    return () => {
+      removeInteractable("board-prev");
+      removeInteractable("board-next");
+    };
+  }, []);
 
   return (
     <>

@@ -3,7 +3,7 @@ import { create } from "zustand";
 const MAX_PITCH = Math.PI / 2 - 0.1;
 const MIN_PITCH = -MAX_PITCH;
 
-export const mobileControlStore = create((set) => ({
+export const useMobileControlStore = create((set) => ({
   mobileMove: {
     forward: false,
     backward: false,
@@ -14,6 +14,16 @@ export const mobileControlStore = create((set) => ({
   mobileLook: {
     yaw: 0,
     pitch: 0,
+  },
+
+  mobileAction: {
+    jump: false,
+    run: false,
+    push: false,
+  },
+
+  setMobileAction: (action) => {
+    set((state) => ({ mobileAction: { ...state.mobileAction, ...action } }));
   },
 
   setMobileMove: (movement) => {

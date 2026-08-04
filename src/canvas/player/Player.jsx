@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-import { mobileControlStore } from "@/store/mobileControlsStore";
+import { useMobileControlStore } from "@/store/mobileControlsStore";
 import { useUserStore } from "@/store/userStore";
 import { isMobile } from "@/utils/device";
 import { useFrame } from "@react-three/fiber";
@@ -36,8 +36,9 @@ export default function Player({
 }) {
   const playerRef = useRef();
   const lastSentRef = useRef(0);
-  const mobileMove = mobileControlStore((state) => state.mobileMove);
-  const mobileLook = mobileControlStore((state) => state.mobileLook);
+  const mobileMove = useMobileControlStore((state) => state.mobileMove);
+  const mobileLook = useMobileControlStore((state) => state.mobileLook);
+  const mobileAction = useMobileControlStore((state) => state.mobileAction);
   const movement = usePersonControls();
   const setMyPosition = useUserStore((state) => state.setMyPosition);
   const { isLock } = usePointerLock();
@@ -52,9 +53,7 @@ export default function Player({
     ? {
         ...mobileMove,
         ...mobileLook,
-        jump: movement.jump,
-        run: movement.run,
-        push: movement.push,
+        ...mobileAction,
       }
     : movement;
 
