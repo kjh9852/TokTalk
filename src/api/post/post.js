@@ -37,24 +37,35 @@ export async function getTotalPage(pageSize = 6) {
 }
 
 export async function getPost({ pageSize = 6, startDoc = null }) {
-  const postRef = collection(db, "post");
-  let q = query(postRef, orderBy("createDate", "desc"), limit(pageSize));
+  try {
+    const postRef = collection(db, "post");
+    let q = query(postRef, orderBy("createDate", "desc"), limit(pageSize));
 
-  if (startDoc) {
-    q = query(
-      postRef,
-      orderBy("createDate", "desc"),
-      startAfter(startDoc),
-      limit(pageSize),
-    );
+    if (startDoc) {
+      q = query(
+        postRef,
+        orderBy("createDate", "desc"),
+        startAfter(startDoc),
+        limit(pageSize),
+      );
+    }
+    const snapShot = await getDocs(q);
+
+    const posts = snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const lastDoc = snapShot.docs[snapShot.docs.length - 1] ?? null;
+
+    return { posts, lastDoc };
+  } catch (error) {
+    console.error("🔥 getPost ERROR", {
+      error,
+      name: error?.name,
+      message: error?.message,
+      code: error?.code,
+      startDoc: startDoc?.id,
+    });
+
+    throw error;
   }
-
-  const snapShot = await getDocs(q);
-
-  const posts = snapShot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  const lastDoc = snapShot.docs[snapShot.docs.length - 1] ?? null;
-
-  return { posts, lastDoc };
 }
 
 export async function deletePost(postId) {
