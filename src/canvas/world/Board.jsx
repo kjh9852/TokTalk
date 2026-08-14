@@ -8,7 +8,7 @@ import { RigidBody } from "@react-three/rapier";
 
 import TriangleButton from "@/canvas/world/TriangleButton";
 
-export default function Board({ onPostNext, onPostPrev }) {
+export default function Board({ onPostNext, onPostPrev, page, totalPage }) {
   const { scene } = useGLTF("/models/board.glb");
   const myPosition = useUserStore((state) => state.myPosition);
   const boardRef = useRef();
@@ -33,39 +33,41 @@ export default function Board({ onPostNext, onPostPrev }) {
     const { addInteractable, removeInteractable } =
       useInteractionStore.getState();
 
-    addInteractable({
-      id: "board-prev",
-      icon: "prev",
-      position: {
-        x: 9,
-        z: 3.85,
-      },
-      range: 3,
-      interact: () => {
-        console.log("prev interact");
-        prevPageRef.current();
-      },
-    });
+    if (page > 1) {
+      addInteractable({
+        id: "board-prev",
+        icon: "prev",
+        position: {
+          x: 9,
+          z: 3.85,
+        },
+        range: 3,
+        interact: () => {
+          prevPageRef.current();
+        },
+      });
+    }
 
-    addInteractable({
-      id: "board-next",
-      icon: "next",
-      position: {
-        x: 7,
-        z: 3.85,
-      },
-      range: 3,
-      interact: () => {
-        console.log("next interact");
-        nextPageRef.current();
-      },
-    });
+    if (page < totalPage) {
+      addInteractable({
+        id: "board-next",
+        icon: "next",
+        position: {
+          x: 7,
+          z: 3.85,
+        },
+        range: 3,
+        interact: () => {
+          nextPageRef.current();
+        },
+      });
+    }
 
     return () => {
       removeInteractable("board-prev");
       removeInteractable("board-next");
     };
-  }, []);
+  }, [page, totalPage]);
 
   return (
     <>
@@ -74,23 +76,27 @@ export default function Board({ onPostNext, onPostPrev }) {
           <primitive object={scene} />
         </group>
       </RigidBody>
-      <TriangleButton
-        onClick={() => {
-          if (!isWithDistance(myPosition, { x: 8, z: 4 }, 5)) {
-            return;
-          }
-          onPostPrev();
-        }}
-      />
-      <TriangleButton
-        onClick={() => {
-          if (!isWithDistance(myPosition, { x: 8, z: 4 }, 5)) {
-            return;
-          }
-          onPostNext();
-        }}
-        type="next"
-      />
+      {page > 1 && (
+        <TriangleButton
+          onClick={() => {
+            if (!isWithDistance(myPosition, { x: 8, z: 4 }, 5)) {
+              return;
+            }
+            onPostPrev();
+          }}
+        />
+      )}
+      {page < totalPage && (
+        <TriangleButton
+          onClick={() => {
+            if (!isWithDistance(myPosition, { x: 8, z: 4 }, 5)) {
+              return;
+            }
+            onPostNext();
+          }}
+          type="next"
+        />
+      )}
     </>
   );
 }
