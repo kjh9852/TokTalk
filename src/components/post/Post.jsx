@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useGetPosts } from "@/queries/useGetPosts.js";
 import { useTotalPage } from "@/queries/useTotalPage.js";
@@ -14,9 +14,10 @@ import LoadingSpinner from "@/components/ui/Loading/LoadingSpinner";
 export default function Post() {
   const pageDocsRef = useRef([null]);
   const [page, setPage] = useState(1);
-  const { data, isPending, isFetching } = useGetPosts(    page,     pageDocsRef  );
+  const { data, isPending, isFetching } = useGetPosts(page, pageDocsRef);
   const { data: totalPage } = useTotalPage();
   const [initialLastestDate, setInitialLastestDate] = useState(null);
+  const pageLockRef = useRef(false);
 
   const posts = useMemo(() => data?.posts ?? [], [data?.posts]);
 
@@ -34,14 +35,22 @@ export default function Post() {
   }, [posts, page]);
 
   const handleNextPage = () => {
-    if (page >= totalPage || isFetching) return;
+    if (page >= totalPage || pageLockRef.current) return;
+    pageLockRef.current = true;
     setPage((prev) => prev + 1);
   };
 
   const handlePrevPage = () => {
-    if (page <= 1 || isFetching) return;
+    if (page <= 1 || pageLockRef.current) return;
+    pageLockRef.current = true;
     setPage((prev) => prev - 1);
   };
+
+  useEffect(() => {
+    if (!isFetching) {
+      pageLockRef.current = false;
+    }
+  }, [isFetching]);
 
   useEffect(() => {
     if (!data?.lastDoc) return;
@@ -52,8 +61,9 @@ export default function Post() {
     <>
       {isPending && !data && <LoadingSpinner />}
       <PostList postList={posts} />
-      {isFetching && !isPlaceholderData && (
+      {isFetching && (
         <Text
+          font="/fonts/Pretendard-Regular.otf"
           position={[8, 1, 3.904]}
           rotation={[0, Math.PI, 0]}
           fontSize={0.15}
@@ -64,12 +74,22 @@ export default function Post() {
       )}
       {page !== 1 && hasNewPost && (
         <group position={[8, 3.8, 3.8]}>
-          <Text fontSize={0.2} rotation={[0, -Math.PI, 0]}>
+          <Text
+            font="/fonts/Pretendard-Regular.otf"
+            fontSize={0.2}
+            rotation={[0, -Math.PI, 0]}
+          >
             새 게시글이 있습니다
           </Text>
         </group>
       )}
-      <Board onPostNext={handleNextPage} onPostPrev={handlePrevPage} />
+      <Board
+        page={page}
+        totalPage={totalPage}
+        isFetching={isFetching}
+        onPostNext={handleNextPage}
+        onPostPrev={handlePrevPage}
+      />
     </>
   );
 }
