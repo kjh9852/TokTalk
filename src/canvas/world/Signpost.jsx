@@ -62,7 +62,22 @@ export default function Signpost() {
       },
     });
 
-    return () => removeInteractable("sign-post");
+    addInteractable({
+      id: "admin",
+      position: {
+        x: 1.5,
+        z: 4,
+      },
+      range: 2.5,
+      interact: () => {
+        openModal("postedit");
+      },
+    });
+
+    return () => {
+      removeInteractable("sign-post");
+      removeInteractable("admin");
+    };
   }, [openModal]);
 
   return (
