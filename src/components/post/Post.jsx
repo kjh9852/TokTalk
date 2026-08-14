@@ -12,12 +12,9 @@ import PostList from "@/components/post/PostList/PostList";
 import LoadingSpinner from "@/components/ui/Loading/LoadingSpinner";
 
 export default function Post() {
-  const [pageDocs, setPageDocs] = useState([null]);
+  const pageDocsRef = useRef([null]);
   const [page, setPage] = useState(1);
-  const { data, isPending, isFetching, isPlaceholderData } = useGetPosts(
-    page,
-    pageDocs,
-  );
+  const { data, isPending, isFetching } = useGetPosts(    page,     pageDocsRef  );
   const { data: totalPage } = useTotalPage();
   const [initialLastestDate, setInitialLastestDate] = useState(null);
 
@@ -48,11 +45,7 @@ export default function Post() {
 
   useEffect(() => {
     if (!data?.lastDoc) return;
-    setPageDocs((prev) => {
-      const newArr = [...prev];
-      newArr[page] = data.lastDoc;
-      return newArr;
-    });
+    pageDocsRef.current[page] = data.lastDoc;
   }, [data?.lastDoc, page]);
 
   return (
