@@ -62,23 +62,25 @@ export default function Signpost() {
       },
     });
 
-    addInteractable({
-      id: "admin",
-      position: {
-        x: 1.5,
-        z: 4,
-      },
-      range: 2.5,
-      interact: () => {
-        openModal("postedit");
-      },
-    });
+    if (isAdmin) {
+      addInteractable({
+        id: "admin",
+        position: {
+          x: 1.5,
+          z: 4,
+        },
+        range: 2.5,
+        interact: () => {
+          openModal("postedit");
+        },
+      });
+    }
 
     return () => {
       removeInteractable("sign-post");
       removeInteractable("admin");
     };
-  }, [openModal]);
+  }, [openModal, isAdmin]);
 
   return (
     <>
