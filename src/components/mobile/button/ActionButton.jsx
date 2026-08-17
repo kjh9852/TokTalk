@@ -24,14 +24,14 @@ export default function ActionButton() {
       }}
       disabled={!currentInteractable}
     >
-      {currentInteractable ? (
+      {currentInteractable?.icon ? (
         <img
           className={styles[currentInteractable?.icon]}
           src={ACTION_ICON[currentInteractable?.icon]}
           alt={currentInteractable.id}
         />
       ) : (
-        "액션"
+        <span>{currentInteractable?.id ?? "액션"}</span>
       )}
     </button>
   );
