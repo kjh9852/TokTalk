@@ -1,0 +1,11 @@
+.userCount {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: auto;
+  z-index: 99;
+}
+
+.userCount span {
+  font-size: 14px;
+}
