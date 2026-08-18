@@ -1,5 +1,6 @@
 import { Suspense, useCallback, useEffect } from "react";
 
+import usePlayerSocket from "@/socket/usePlayerSocket";
 import { useModalStore } from "@/store/modalStore";
 import { useUserStore } from "@/store/userStore";
 import { isMobile } from "@/utils/device";
@@ -12,7 +13,6 @@ import usePointerLock from "@/hooks/usePointerLock";
 import ModelLoader from "@/canvas/loader/ModelLoader";
 import PhysicsWorld from "@/canvas/physics/PhysicsWorld";
 import PlayerManager from "@/canvas/player/PlayerManager";
-import usePlayerSocket from "@/canvas/player/hooks/usePlayerSocket";
 
 import Post from "@/components/post/Post";
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { useLanguage } from "@/context/LanguageContextProvider";
+import { socket } from "@/socket/socket";
+import useSocketStatus from "@/socket/useSocketStatus";
 import { useModalStore } from "@/store/modalStore";
 import { isMobile } from "@/utils/device";
 
@@ -8,38 +9,20 @@ import CanvasComponent from "@/canvas/CanvasComponent";
 
 import ChattingView from "@/components/chat/ChattingView/ChattingView";
 import MobileController from "@/components/mobile/MobileController";
-import LoadingScreen from "@/components/ui/Loading/LoadingScreen";
-import Menu from "@/components/ui/Menu/Menu";
-import Modal from "@/components/ui/Modal/Modal";
+import { LoadingScreen, Menu, Modal, UserCount } from "@/components/ui";
 
-export default function Main({
-  socket,
-  nickname,
-  setNickname,
-  userCount,
-  isSocketConnected,
-}) {
+import styles from "./Home.module.css";
+
+export default function Home() {
   const isOpen = useModalStore((state) => state.isOpen);
   const [isModelLoaded, setIsModelLoaded] = useState(false);
-  const { t } = useLanguage();
-
+  const [nickname, setNickname] = useState("익명");
+  const { userCount, isSocketConnected } = useSocketStatus(socket);
   const isReady = isModelLoaded && isSocketConnected;
 
   return (
-    <div style={{ height: "100%" }}>
-      <div
-        style={{
-          position: "fixed",
-          top: "10px",
-          right: "10px",
-          width: "auto",
-          zIndex: 99,
-        }}
-      >
-        <span
-          style={{ fontSize: "14px" }}
-        >{`${t.userCount} : ${userCount}`}</span>
-      </div>
+    <div className={styles.container}>
+      <UserCount userCount={userCount} />
       <Menu />
       <ChattingView socket={socket} nickname={nickname} />
       {!isReady && (
