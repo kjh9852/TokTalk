@@ -11,6 +11,9 @@ export function useManagementPosts() {
     initialPageParam: null,
 
     getNextPageParam: (lastPage) => {
+      if (!lastPage.posts || lastPage.posts.length < 6) {
+        return undefined;
+      }
       return lastPage.lastDoc ?? undefined;
     },
   });
