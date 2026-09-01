@@ -10,5 +10,6 @@ export function useGetPosts(page, pageDocsRef) {
       return getPost({ pageSize: 6, startDoc, page });
     },
     queryKey: ["posts", page],
+    staleTime: 1000 * 60,
   });
 }
