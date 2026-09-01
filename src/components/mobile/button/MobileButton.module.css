@@ -8,7 +8,20 @@
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
+  transition: all 0.2s ease;
   cursor: pointer;
+}
+
+.active {
+  background: #f4c7a1;
+  transform: scale(0.95);
+}
+
+.mobileButton img {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .jump {
