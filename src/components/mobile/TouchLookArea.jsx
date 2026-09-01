@@ -28,10 +28,10 @@ export default function TouchLookArea() {
       (t) => t.identifier === lookTouchId.current,
     );
 
+    if (!touch) return;
+
     const deltaX = touch.clientX - lastTouch.current.x;
     const deltaY = touch.clientY - lastTouch.current.y;
-
-    console.log(deltaX, deltaY);
 
     lastTouch.current = {
       x: touch.clientX,
@@ -45,8 +45,19 @@ export default function TouchLookArea() {
   };
 
   const handleTouchEnd = (e) => {
-    console.log(e);
+    const touchEnded = [...e.touches].some(
+      (t) => t.identifier === lookTouchId.current,
+    );
+
+    if (!touchEnded) return;
+
+    lookTouchId.current = null;
+    lastTouch.current = {
+      x: 0,
+      y: 0,
+    };
   };
+
   return (
     <div
       style={{
