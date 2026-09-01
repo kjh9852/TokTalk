@@ -34,7 +34,7 @@ export default function MobileJoystick() {
           });
         }}
         size={120}
-        sticky={true}
+        sticky={false}
         baseColor="#e2e2e2"
         stickColor="#919191"
       />
