@@ -1,6 +1,3 @@
-.container {
-}
-
 .toggle {
   position: relative;
   display: flex;
@@ -16,7 +13,9 @@
 
 .toggle.on {
   background: #4caf50;
-  justify-content: flex-end;
+}
+.toggle.on .knob {
+  transform: translateX(37px);
 }
 
 .title {
@@ -30,6 +29,8 @@
   color: #000;
   top: 50%;
   transform: translateY(-50%);
+  transition: all 0.3s;
+  z-index: 2;
 }
 
 .label.left {

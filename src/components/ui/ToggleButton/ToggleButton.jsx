@@ -18,7 +18,7 @@ export default function ToggleButton({
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <h2 className={styles.title}>{title}</h2>
       <div
         className={`${styles.toggle} ${isOn ? styles.on : ""}`}
