@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef } from "react";
 
 import submitIcon from "@/assets/icons/submit.png";
-import { useLanguage } from "@/context/LanguageContextProvider";
 import { useModalStore } from "@/store/modalStore";
 import { isMobile } from "@/utils/device";
+
+import useLanguage from "@/hooks/useLanguage";
 
 import Button from "@/components/ui/Button/Button";
 

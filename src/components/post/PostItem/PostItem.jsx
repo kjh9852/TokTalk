@@ -1,7 +1,8 @@
-import { useLanguage } from "@/context/LanguageContextProvider";
 import { getBoardPostPosition } from "@/utils/getBoardPostPosition";
 import { Text } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
+
+import useLanguage from "@/hooks/useLanguage";
 
 export default function PostItem({ post, index }) {
   const { t } = useLanguage();

@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { useState } from "react";
 
-const AdminContext = createContext();
+import AdminContext from "@/context/admin/AdminContext";
 
 export default function AdminContextProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -11,5 +11,3 @@ export default function AdminContextProvider({ children }) {
     </AdminContext.Provider>
   );
 }
-
-export const useAdmin = () => useContext(AdminContext);

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 
 import woodTexture from "@/assets/images/wood.png";
-import { useAdmin } from "@/context/AdminContext";
 import { useInteractionStore } from "@/store/interactionStore";
 import { useModalStore } from "@/store/modalStore";
 import { useUserStore } from "@/store/userStore";
@@ -10,6 +9,8 @@ import { isWithDistance } from "@/utils/distance";
 import { Text, useGLTF, useTexture } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
+
+import useAdmin from "@/hooks/useAdmin";
 
 export default function Signpost() {
   const { scene } = useGLTF("/models/signs.glb");

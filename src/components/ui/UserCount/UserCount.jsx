@@ -1,4 +1,4 @@
-import { useLanguage } from "@/context/LanguageContextProvider";
+import useLanguage from "@/hooks/useLanguage";
 
 import styles from "./UserCount.module.css";
 

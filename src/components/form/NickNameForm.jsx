@@ -1,4 +1,5 @@
-import { useLanguage } from "../../context/LanguageContextProvider";
+import useLanguage from "@/hooks/useLanguage";
+
 import Button from "../ui/Button/Button";
 import Input from "../ui/Input/Input";
 import styles from "./NickNameForm.module.css";

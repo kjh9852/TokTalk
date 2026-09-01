@@ -4,8 +4,9 @@ import InfomationIcon from "@/assets/icons/infomation.png";
 import MenuIcon from "@/assets/icons/menu.png";
 import SettingIcon from "@/assets/icons/setting.png";
 import UserIcon from "@/assets/icons/user.png";
-import { useLanguage } from "@/context/LanguageContextProvider";
 import { useModalStore } from "@/store/modalStore";
+
+import useLanguage from "@/hooks/useLanguage";
 
 import styles from "./Menu.module.css";
 

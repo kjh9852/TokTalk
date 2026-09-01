@@ -1,10 +1,11 @@
 import { useState } from "react";
 
 import CloseIcon from "@/assets/icons/close.png";
-import { useLanguage } from "@/context/LanguageContextProvider";
 import { useAddPost } from "@/queries/useAddPost";
 import { useModalStore } from "@/store/modalStore";
 import { useUserStore } from "@/store/userStore";
+
+import useLanguage from "@/hooks/useLanguage";
 
 import NickNameForm from "@/components/form/NickNameForm";
 import PostForm from "@/components/form/PostForm";

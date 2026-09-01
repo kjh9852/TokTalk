@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { useAdmin } from "@/context/AdminContext";
-import { useLanguage } from "@/context/LanguageContextProvider";
+import useAdmin from "@/hooks/useAdmin";
+import useLanguage from "@/hooks/useLanguage";
 
 import AdminForm from "@/components/form/AdminForm";
 import Button from "@/components/ui/Button/Button";
@@ -13,7 +13,7 @@ export default function Setting({ socket }) {
   const { isAdmin, setIsAdmin } = useAdmin();
   const [adminMode, setAdminMode] = useState(isAdmin);
   const [adminCode, setAdminCode] = useState("");
-  const { t, toggleLanguage, isOn, setIsOn } = useLanguage();
+  const { t, toggleLanguage, isOn } = useLanguage();
 
   const handleAdminCodeChange = (e) => {
     setAdminCode(e.target.value);
