@@ -86,7 +86,6 @@ export default function Player({
 
     if (isLock) {
       if (isMoving && !isKnockback) {
-        console.log("move!");
         const CURRENT_SPEED = playerInput.run ? MOVE_SPEED * 1.8 : MOVE_SPEED;
 
         direction
