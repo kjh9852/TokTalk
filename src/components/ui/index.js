@@ -1,5 +1,6 @@
 export { default as Button } from "./Button/Button";
 export { default as Input } from "./Input/Input";
+export { default as Loading } from "./Loading/Loading";
 export { default as LoadingScreen } from "./Loading/LoadingScreen";
 export { default as LoadingSpinner } from "./Loading/LoadingSpinner";
 export { default as Menu } from "./Menu/Menu";
