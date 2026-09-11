@@ -11,6 +11,9 @@ export function useAddPost() {
       queryClient.invalidateQueries({
         queryKey: ["posts"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["totalPage"],
+      });
     },
   });
 }
