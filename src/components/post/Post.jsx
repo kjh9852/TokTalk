@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useGetPosts } from "@/queries/useGetPosts.js";
+import { usePrefetchPosts } from "@/queries/usePrefetchPosts";
 import { useTotalPage } from "@/queries/useTotalPage.js";
 import { Text } from "@react-three/drei";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useNewPostNotification } from "@/hooks/useNewPostNotification";
 
@@ -12,10 +14,12 @@ import PostList from "@/components/post/PostList/PostList";
 import LoadingSpinner from "@/components/ui/Loading/LoadingSpinner";
 
 export default function Post() {
+  const queryClient = useQueryClient();
   const pageDocsRef = useRef([null]);
   const [page, setPage] = useState(1);
   const { data, isPending, isFetching } = useGetPosts(page, pageDocsRef);
   const { data: totalPage } = useTotalPage();
+  const { prefetchPosts } = usePrefetchPosts(pageDocsRef, totalPage);
   const [initialLastestDate, setInitialLastestDate] = useState(null);
   const pageLockRef = useRef(false);
 
@@ -34,8 +38,17 @@ export default function Post() {
     }
   }, [posts, page]);
 
+  const resetPosts = () => {
+    pageDocsRef.current = [null];
+    queryClient.removeQueries({
+      queryKey: ["posts"],
+    });
+  };
+
   const handleNextPage = () => {
     if (page >= totalPage || pageLockRef.current) return;
+    if (!pageDocsRef.current[page]) return;
+
     pageLockRef.current = true;
     setPage((prev) => prev + 1);
   };
@@ -43,19 +56,24 @@ export default function Post() {
   const handlePrevPage = () => {
     if (page <= 1 || pageLockRef.current) return;
     pageLockRef.current = true;
+
+    if (page === 2 && hasNewPost) {
+      resetPosts();
+    }
+
     setPage((prev) => prev - 1);
   };
 
   useEffect(() => {
-    if (!isFetching) {
-      pageLockRef.current = false;
-    }
-  }, [isFetching]);
+    if (!data) return;
+    pageLockRef.current = false;
+  }, [data]);
 
   useEffect(() => {
     if (!data?.lastDoc) return;
     pageDocsRef.current[page] = data.lastDoc;
-  }, [data?.lastDoc, page]);
+    prefetchPosts(page + 1, 2);
+  }, [data?.lastDoc, page, prefetchPosts]);
 
   return (
     <>
