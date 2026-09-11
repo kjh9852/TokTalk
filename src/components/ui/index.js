@@ -4,7 +4,6 @@ export { default as Loading } from "./Loading/Loading";
 export { default as LoadingScreen } from "./Loading/LoadingScreen";
 export { default as LoadingSpinner } from "./Loading/LoadingSpinner";
 export { default as Menu } from "./Menu/Menu";
-export { default as Modal } from "./Modal/Modal";
 export { default as TextArea } from "./TextArea/TextArea";
 export { default as ToggleButton } from "./ToggleButton/ToggleButton";
 export { default as UserCount } from "./UserCount/UserCount";

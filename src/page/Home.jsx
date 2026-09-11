@@ -9,7 +9,8 @@ import CanvasComponent from "@/canvas/CanvasComponent";
 
 import ChattingView from "@/components/chat/ChattingView/ChattingView";
 import MobileController from "@/components/mobile/MobileController";
-import { LoadingScreen, Menu, Modal, UserCount } from "@/components/ui";
+import Modal from "@/components/modal/Modal";
+import { LoadingScreen, Menu, UserCount } from "@/components/ui";
 
 import styles from "./Home.module.css";
 
@@ -39,7 +40,7 @@ export default function Home() {
       {isMobile && <MobileController socket={socket} />}
       {isOpen && (
         <Modal
-          socket={socket}
+          nickname={nickname}
           onSetNickName={setNickname}
           defaultValue={nickname}
         />

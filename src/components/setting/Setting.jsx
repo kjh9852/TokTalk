@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { socket } from "@/socket/socket";
+
 import useAdmin from "@/hooks/useAdmin";
 import useLanguage from "@/hooks/useLanguage";
 
@@ -9,7 +11,7 @@ import ToggleButton from "@/components/ui/ToggleButton/ToggleButton";
 
 import styles from "./Setting.module.css";
 
-export default function Setting({ socket }) {
+export default function Setting() {
   const { isAdmin, setIsAdmin } = useAdmin();
   const [adminMode, setAdminMode] = useState(isAdmin);
   const [adminCode, setAdminCode] = useState("");
