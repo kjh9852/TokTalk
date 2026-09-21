@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useEffect } from "react";
+import { Suspense, useCallback, useEffect, useRef } from "react";
 
 import usePlayerSocket from "@/socket/usePlayerSocket";
 import { useModalStore } from "@/store/modalStore";
@@ -23,7 +23,7 @@ export default function CanvasComponent({ socket, nickname, onModelLoaded }) {
   const setControls = useUserStore((state) => state.setControls);
   const isOpen = useModalStore((state) => state.isOpen);
   const players = usePlayerSocket(socket, nickname);
-
+  const initialNicknameRef = useRef(nickname);
   const shouldUsePointerLock = !isOpen && !isMobile;
 
   // 플레이어 업데이트 함수
@@ -36,8 +36,8 @@ export default function CanvasComponent({ socket, nickname, onModelLoaded }) {
 
   useEffect(() => {
     if (!socket) return;
-    socket.emit("join", { nickname });
-  }, [socket, nickname]);
+    socket.emit("join", { nickname: initialNicknameRef.current });
+  }, [socket]);
 
   return (
     <div id="container">
