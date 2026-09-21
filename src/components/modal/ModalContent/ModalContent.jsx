@@ -1,4 +1,4 @@
-import { useModalStore } from "@/store/modalStore";
+import useLanguage from "@/hooks/useLanguage";
 
 import NickNameForm from "@/components/form/NickNameForm";
 import PostForm from "@/components/form/PostForm";
@@ -6,24 +6,54 @@ import InfoContent from "@/components/modal/InfoContent";
 import PostEditList from "@/components/post/PostEdit/PostEditList";
 import Setting from "@/components/setting/Setting";
 
-export default function ModalContent({ closeForm, onSetNickName, nickname }) {
-  const modalType = useModalStore((state) => state.modalType);
-  console.log(nickname);
+import styles from "./ModalContent.module.css";
+
+export default function ModalContent({
+  modalType,
+  closeForm,
+  onSetNickName,
+  nickname,
+}) {
+  const { t } = useLanguage();
+
   return (
     <>
       {modalType === "nickname" && (
-        <NickNameForm
-          defaultValue={nickname}
-          closeForm={closeForm}
-          onSetNickName={onSetNickName}
-        />
+        <>
+          <h2 className={styles.modalTitle}>{t.modal.title[modalType]}</h2>
+          <NickNameForm
+            defaultValue={nickname}
+            closeForm={closeForm}
+            onSetNickName={onSetNickName}
+          />
+        </>
       )}
       {modalType === "post" && (
-        <PostForm closeForm={closeForm} nickname={nickname} />
+        <>
+          <h2 className={styles.modalTitle}>{t.modal.title[modalType]}</h2>
+          <PostForm closeForm={closeForm} nickname={nickname} />
+        </>
       )}
-      {modalType === "postedit" && <PostEditList />}
-      {modalType === "info" && <InfoContent />}
-      {modalType === "setting" && <Setting />}
+      {modalType === "postedit" && (
+        <>
+          <h2 className={`${styles.modalTitle} ${styles.postEditTitle}`}>
+            {t.modal.title[modalType]}
+          </h2>
+          <PostEditList />
+        </>
+      )}
+      {modalType === "info" && (
+        <>
+          <h2 className={styles.modalTitle}>{t.modal.title[modalType]}</h2>
+          <InfoContent />
+        </>
+      )}
+      {modalType === "setting" && (
+        <>
+          <h2 className={styles.modalTitle}>{t.modal.title[modalType]}</h2>
+          <Setting />
+        </>
+      )}
     </>
   );
 }

@@ -6,7 +6,7 @@ import useLanguage from "@/hooks/useLanguage";
 
 import Button from "../ui/Button/Button";
 import Input from "../ui/Input/Input";
-import styles from "./NickNameForm.module.css";
+import styles from "./FromStyle.module.css";
 
 export default function NickNameForm({
   closeForm,
@@ -48,11 +48,9 @@ export default function NickNameForm({
         maxLength={maxLength}
         error={userName.length > 10}
       />
-      <div className={styles.formBottom}>
-        <Button type="large" disabled={!userName || userName.length > 10}>
-          {t.modal.button.nickname}
-        </Button>
-      </div>
+      <Button type="large" disabled={!userName || userName.length > 10}>
+        {t.modal.button.nickname}
+      </Button>
     </form>
   );
 }

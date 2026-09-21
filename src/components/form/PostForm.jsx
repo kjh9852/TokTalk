@@ -8,7 +8,7 @@ import { Loading } from "@/components/ui";
 import Button from "@/components/ui/Button/Button";
 import TextArea from "@/components/ui/TextArea/TextArea";
 
-import styles from "./NickNameForm.module.css";
+import styles from "./FromStyle.module.css";
 
 export default function PostForm({ closeForm, nickname }) {
   const { t } = useLanguage();
@@ -41,14 +41,12 @@ export default function PostForm({ closeForm, nickname }) {
         placeHolder={t.modal.placeholder.post}
         error={content.length > 50}
       />
-      <div className={styles.formBottom}>
-        <Button
-          type="large"
-          disabled={!content || content.length > 50 || isPending}
-        >
-          {isPending ? <Loading /> : t.modal.button.post}
-        </Button>
-      </div>
+      <Button
+        type="large"
+        disabled={!content || content.length > 50 || isPending}
+      >
+        {isPending ? <Loading /> : t.modal.button.post}
+      </Button>
     </form>
   );
 }

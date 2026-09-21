@@ -1,0 +1,15 @@
+.modalTitle {
+  padding-top: 34px;
+  padding-bottom: 18px;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  color: #555555;
+}
+
+.postEditTitle {
+  position: sticky;
+  padding-bottom: 34px;
+  top: 0;
+  background: #f9f9f9;
+}

@@ -3,7 +3,7 @@ export default function InfoContent() {
     <div>
       <p
         style={{
-          paddingBottom: "18px",
+          paddingBottom: "34px",
           fontSize: "14px",
           fontWeight: "300",
           color: "#000",
