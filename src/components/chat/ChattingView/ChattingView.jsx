@@ -14,6 +14,7 @@ export default function ChattingView({ socket, nickname }) {
   const [isChatExpanded, setIsChatExpanded] = useState(false);
   const { chatArr } = useChatMessage(socket);
   const [isTyping, setIsTyping] = useState(false);
+  const chatTimeoutRef = useRef(null);
 
   const typingTimeoutRef = useRef(null);
 
@@ -28,17 +29,23 @@ export default function ChattingView({ socket, nickname }) {
       ? chatArr
       : chatArr.slice(-1);
 
-  useEffect(() => {
-    if (isMobile) return;
-    if (!isChatExpanded) return;
+  const resetChatTimeout = useCallback(() => {
+    if (chatTimeoutRef.current) {
+      clearTimeout(chatTimeoutRef.current);
+    }
 
-    const timeout = setTimeout(() => {
+    chatTimeoutRef.current = setTimeout(() => {
       setIsChatExpanded(false);
+      chatTimeoutRef.current = null;
     }, 5000);
+  }, []);
 
-    return () => clearTimeout(timeout);
-  }, [isChatExpanded]);
-  // 5초 뒤에 표시 되는 메세지 1개만 남김
+  const expandChat = useCallback(() => {
+    if (isMobile) return;
+
+    setIsChatExpanded(true);
+    resetChatTimeout();
+  }, [resetChatTimeout]);
 
   const sendMessageHandler = useCallback(
     (e) => {
@@ -52,9 +59,11 @@ export default function ChattingView({ socket, nickname }) {
       socket.emit("stopTyping");
       setIsTyping(false);
 
+      expandChat();
+
       setUserInputMsg("");
     },
-    [userInputMsg, nickname, socket],
+    [userInputMsg, nickname, socket, expandChat],
   );
 
   const changeUserMsg = (e) => {
@@ -80,6 +89,10 @@ export default function ChattingView({ socket, nickname }) {
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
       }
+
+      if (chatTimeoutRef.current) {
+        clearTimeout(chatTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -91,7 +104,7 @@ export default function ChattingView({ socket, nickname }) {
         <ChatCard chatArr={visibleChat} socketId={socket.id} />
         <ChatInput
           userInputMsg={userInputMsg}
-          setIsChatExpanded={setIsChatExpanded}
+          expandChat={expandChat}
           onChangeUserMsg={changeUserMsg}
           onSendMessage={sendMessageHandler}
         />

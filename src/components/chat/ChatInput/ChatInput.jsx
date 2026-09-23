@@ -14,7 +14,7 @@ export default function ChatInput({
   userInputMsg,
   onChangeUserMsg,
   onSendMessage,
-  setIsChatExpanded,
+  expandChat,
 }) {
   const isOpen = useModalStore((state) => state.isOpen);
   const chatRef = useRef(null);
@@ -30,11 +30,12 @@ export default function ChatInput({
     (e) => {
       if (e.key !== "Enter") return;
       if (document.activeElement === chatRef.current) return;
+
       e.preventDefault();
-      setIsChatExpanded(true);
+
       handleEnterFocus();
     },
-    [handleEnterFocus, setIsChatExpanded],
+    [handleEnterFocus],
   );
 
   const handleSubmit = (e) => {
@@ -62,6 +63,7 @@ export default function ChatInput({
           onChange={onChangeUserMsg}
           placeholder={t.chat.message}
           disabled={isOpen}
+          onFocus={expandChat}
         />
         <Button type={isMobile ? "mobile" : "small"}>
           {!isMobile ? (
