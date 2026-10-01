@@ -6,7 +6,7 @@
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 500;
   color: #555555;
 }
 
@@ -17,6 +17,7 @@
   border: none;
   border-radius: 8px;
   box-sizing: border-box;
+  resize: none;
   font-size: 16px;
   color: #000;
   background: #fff;
