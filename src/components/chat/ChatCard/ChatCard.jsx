@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import styles from "./ChatCard.module.css";
 
-export default function ChatCard({ chatArr, socketId }) {
+export default function ChatCard({ chatArr, socketId, cooldownMessage }) {
   const chatRef = useRef(null);
 
   useEffect(() => {
@@ -11,15 +11,20 @@ export default function ChatCard({ chatArr, socketId }) {
   }, [chatArr]);
 
   return (
-    <div className={styles.container} ref={chatRef}>
-      {chatArr.map((messageCount, idx) => (
-        <p
-          className={`${styles.chat} ${
-            messageCount.id === socketId && styles.localColor
-          }`}
-          key={`${messageCount.id} - ${messageCount.time} - ${idx}`}
-        >{`[ ${messageCount.author} ] : ${messageCount.message}`}</p>
-      ))}
-    </div>
+    <>
+      <div className={styles.container} ref={chatRef}>
+        {chatArr.map((messageCount, idx) => (
+          <p
+            className={`${styles.chat} ${
+              messageCount.id === socketId && styles.localColor
+            }`}
+            key={`${messageCount.id} - ${messageCount.time} - ${idx}`}
+          >{`[ ${messageCount.author} ] : ${messageCount.message}`}</p>
+        ))}
+      </div>
+      {cooldownMessage && (
+        <p className={styles.chat}>잠시 후 메세지를 보낼 수 있습니다.</p>
+      )}
+    </>
   );
 }

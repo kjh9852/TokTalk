@@ -18,6 +18,10 @@ export default function ChattingView({ socket, nickname }) {
 
   const typingTimeoutRef = useRef(null);
 
+  const cooldownTimeoutRef = useRef(null);
+  const sendCooldownRef = useRef(false);
+  const [cooldownMessage, setCooldownMessage] = useState(false);
+
   const isChatOpen = useMobileChatStore((state) => state.isChatOpen);
   const showChat = !isMobile || isChatOpen;
 
@@ -52,7 +56,12 @@ export default function ChattingView({ socket, nickname }) {
       e.preventDefault();
       if (!nickname.trim() || userInputMsg.trim().length === 0) return;
 
-      socket.emit("send message", {
+      if (sendCooldownRef.current) {
+        setCooldownMessage(true);
+        return;
+      }
+
+      socket.emit("sendMessage", {
         message: userInputMsg,
       });
 
@@ -60,8 +69,16 @@ export default function ChattingView({ socket, nickname }) {
       setIsTyping(false);
 
       expandChat();
-
       setUserInputMsg("");
+
+      sendCooldownRef.current = true;
+      setCooldownMessage(false);
+
+      cooldownTimeoutRef.current = setTimeout(() => {
+        sendCooldownRef.current = false;
+        setCooldownMessage(false);
+        cooldownTimeoutRef.current = null;
+      }, 2000);
     },
     [userInputMsg, nickname, socket, expandChat],
   );
@@ -93,6 +110,10 @@ export default function ChattingView({ socket, nickname }) {
       if (chatTimeoutRef.current) {
         clearTimeout(chatTimeoutRef.current);
       }
+
+      if (cooldownTimeoutRef.current) {
+        clearTimeout(cooldownTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -101,7 +122,11 @@ export default function ChattingView({ socket, nickname }) {
       className={`${styles.chatSection} ${showChat ? styles.open : styles.close}`}
     >
       <div className={styles.chatView}>
-        <ChatCard chatArr={visibleChat} socketId={socket.id} />
+        <ChatCard
+          chatArr={visibleChat}
+          socketId={socket.id}
+          cooldownMessage={cooldownMessage}
+        />
         <ChatInput
           userInputMsg={userInputMsg}
           expandChat={expandChat}
