@@ -1,7 +1,8 @@
 .container {
-  overflow-y: scroll;
+  width: 100%;
   max-width: 720px;
   max-height: 200px;
+  overflow-y: auto;
 }
 
 .chat {
