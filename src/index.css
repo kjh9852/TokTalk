@@ -1,55 +1,9 @@
 @font-face {
   font-family: "Pretendard";
-  font-weight: 100;
-  src: url("./assets/fonts/Pretendard-Thin.otf") format("opentype");
-}
-
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 200;
-  src: url("./assets/fonts/Pretendard-SemiBold.otf") format("opentype");
-}
-
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 300;
-  src: url("./assets/fonts/Pretendard-Regular.otf") format("opentype");
-}
-
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 400;
-  src: url("./assets/fonts/Pretendard-Medium.otf") format("opentype");
-}
-
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 500;
-  src: url("./assets/fonts/Pretendard-Light.otf") format("opentype");
-}
-
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 600;
-  src: url("./assets/fonts/Pretendard-ExtraLight.otf") format("opentype");
-}
-
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 700;
-  src: url("./assets/fonts/Pretendard-ExtraBold.otf") format("opentype");
-}
-
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 800;
-  src: url("./assets/fonts/Pretendard-Bold.otf") format("opentype");
-}
-
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 900;
-  src: url("./assets/fonts/Pretendard-Black.otf") format("opentype");
+  src: url("./assets/fonts/PretendardVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 * {
@@ -63,6 +17,12 @@ body,
   width: 100%;
   height: 100%;
   overflow: hidden;
+  overscroll-behavior-y: none;
+}
+
+#container {
+  height: 100%;
+  overscroll-behavior-y: none;
 }
 
 #root {
@@ -71,34 +31,19 @@ body,
 }
 
 body {
-  font-family: "Pretendard";
-  font-weight: 200;
+  font-family: "Pretendard", sans-serif;
+  font-weight: 400;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-html,
-body,
-#root,
-#container {
-  height: 100%;
-  overscroll-behavior-y: none;
 }
 
 h1,
@@ -112,12 +57,8 @@ h6 {
 }
 
 ul,
-ol,
-li {
+ol {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 0;
 }
 
 .container {
@@ -137,26 +78,14 @@ li {
   z-index: 2;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
 button {
-  font-family: "Pretendard";
   border: none;
   background: none;
   padding: 0;
