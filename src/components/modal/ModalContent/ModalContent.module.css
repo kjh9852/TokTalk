@@ -10,6 +10,8 @@
 .postEditTitle {
   position: sticky;
   padding-bottom: 34px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #e8e8e8;
   top: 0;
   background: #f9f9f9;
 }

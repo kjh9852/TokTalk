@@ -23,7 +23,9 @@ export default function Modal({ nickname, onSetNickName }) {
   };
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${modalType !== "postedit" ? styles.default : ""}`}
+    >
       <div className={styles.wrapper}>
         <button className={styles.closeButton} onClick={handleModalClose}>
           <img className={styles.closeIcon} src={CloseIcon} alt="닫기" />
