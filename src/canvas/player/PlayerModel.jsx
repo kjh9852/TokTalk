@@ -13,7 +13,7 @@ import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 const DEFAULT_CHATBOX_SIZE = [0.12, 0.175];
 
 export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
-  const { scene, animations } = useGLTF("/models/pinkbin.glb");
+  const { scene, animations } = useGLTF("/models/pinkbin-optimized.glb");
   const { actions, ref } = useAnimations(animations);
   const chatRef = useRef(null);
   const [chatBoxSize, setChatBoxSize] = useState([0, 0]);
@@ -124,4 +124,4 @@ export default function PlayerModel({ nickname, message, isTyping, isMoving }) {
   );
 }
 
-useGLTF.preload("/models/pinkbin.glb");
+useGLTF.preload("/models/pinkbin-optimized.glb");

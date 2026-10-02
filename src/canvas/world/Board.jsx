@@ -9,7 +9,7 @@ import { RigidBody } from "@react-three/rapier";
 import TriangleButton from "@/canvas/world/TriangleButton";
 
 export default function Board({ onPostNext, onPostPrev, page, totalPage }) {
-  const { scene } = useGLTF("/models/board.glb");
+  const { scene } = useGLTF("/models/board-1024.glb");
   const myPosition = useUserStore((state) => state.myPosition);
   const boardRef = useRef();
   const nextPageRef = useRef(onPostNext);
@@ -101,4 +101,4 @@ export default function Board({ onPostNext, onPostPrev, page, totalPage }) {
   );
 }
 
-useGLTF.preload("/models/board.glb");
+useGLTF.preload("/models/board-1024.glb");

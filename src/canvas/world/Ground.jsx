@@ -1,4 +1,4 @@
-import floorTexture from "@/assets/images/grid02.png";
+import floorTexture from "@/assets/images/ground-grid.png";
 import { useTexture } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
