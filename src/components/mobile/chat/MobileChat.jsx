@@ -1,4 +1,4 @@
-import mobileChatIcon from "@/assets/icons/message.png";
+import ChatIcon from "@/assets/icons/message.svg?react";
 import { useMobileChatStore } from "@/store/mobileChatStore";
 
 import { useChatMessage } from "@/hooks/useChatMessage";
@@ -11,16 +11,17 @@ export default function MobileChat({ socket }) {
 
   return (
     <div className={styles.chatContainer}>
-      <div className={styles.chatAlign}>
-        <button onClick={toggleChat}>
-          <img
-            className={styles.chatIcon}
-            src={mobileChatIcon}
-            alt="채팅아이콘"
-          />
-        </button>
-      </div>
-      {chatCount >= 1 && <span className={styles.chatCount}>{chatCount}</span>}
+      <button
+        className={styles.chatButton}
+        onClick={toggleChat}
+      >
+        <ChatIcon className={styles.chatIcon} />
+      </button>
+      {chatCount >= 1 && (
+        <span className={styles.chatCount}>
+          {chatCount > 10 ? "10+" : chatCount}
+        </span>
+      )}
     </div>
   );
 }

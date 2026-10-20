@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-import InfomationIcon from "@/assets/icons/infomation.png";
-import MenuIcon from "@/assets/icons/menu.png";
-import SettingIcon from "@/assets/icons/setting.png";
-import UserIcon from "@/assets/icons/user.png";
 import { useModalStore } from "@/store/modalStore";
 
 import useLanguage from "@/hooks/useLanguage";
+
+import Icon from "@/components/icons/Icon";
 
 import styles from "./Menu.module.css";
 
@@ -14,6 +12,7 @@ export default function Menu() {
   const { t } = useLanguage();
   const openModal = useModalStore((state) => state.openModal);
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
 
   const handleMenuOpen = (e) => {
     e.stopPropagation();
@@ -29,14 +28,18 @@ export default function Menu() {
   return (
     <div className={styles.buttonPosition}>
       <div className={styles.menuButton}>
-        <button className={styles.menuFlex} onClick={handleMenuOpen}>
-          <img src={MenuIcon} className={styles.menuImage} />
+        <button
+          className={styles.menuFlex}
+          onClick={handleMenuOpen}
+        >
+          <Icon name="menu" />
           <div className={styles.menuName}>
             <span>{t.menuList.menu}</span>
           </div>
         </button>
       </div>
       <div
+        ref={menuRef}
         className={`${styles.menuWrapper} ${
           isOpen ? styles.open : styles.close
         }`}
@@ -47,7 +50,7 @@ export default function Menu() {
               className={styles.menuFlex}
               onClick={handleModalOpenWithType("nickname")}
             >
-              <img src={UserIcon} className={styles.menuImage} />
+              <Icon name="user" />
               <div className={styles.menuName}>
                 <span>{t.menuList.nickname}</span>
               </div>
@@ -58,7 +61,7 @@ export default function Menu() {
               className={styles.menuFlex}
               onClick={handleModalOpenWithType("info")}
             >
-              <img src={InfomationIcon} className={styles.menuImage} />
+              <Icon name="infomation" />
               <div className={styles.menuName}>
                 <span>{t.menuList.info}</span>
               </div>
@@ -67,9 +70,20 @@ export default function Menu() {
           <li className={styles.menuButton}>
             <button
               className={styles.menuFlex}
+              onClick={handleModalOpenWithType("guide")}
+            >
+              <Icon name="guide" />
+              <div className={styles.menuName}>
+                <span>조작 방법</span>
+              </div>
+            </button>
+          </li>
+          <li className={styles.menuButton}>
+            <button
+              className={styles.menuFlex}
               onClick={handleModalOpenWithType("setting")}
             >
-              <img src={SettingIcon} className={styles.menuImage} />
+              <Icon name="setting" />
               <div className={styles.menuName}>
                 <span>{t.menuList.setting}</span>
               </div>
