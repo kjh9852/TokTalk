@@ -19,13 +19,13 @@ export default function ToggleButton({
 
   return (
     <div>
-      <h2 className={styles.title}>{title}</h2>
+      <p className={styles.settingLabel}>{title}</p>
       <div
         className={`${styles.toggle} ${isOn ? styles.on : ""}`}
         onClick={handleToggleEvent}
       >
-        <span className={`${styles.label} ${styles.left}`}>{leftLabel}</span>
-        <span className={`${styles.label} ${styles.right}`}>{rightLabel}</span>
+        <span className={`${styles.option} ${styles.left}`}>{leftLabel}</span>
+        <span className={`${styles.option} ${styles.right}`}>{rightLabel}</span>
         <div className={styles.knob}></div>
       </div>
     </div>

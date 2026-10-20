@@ -2,30 +2,38 @@
   position: absolute;
   display: flex;
   padding: 10px;
+
   top: 15px;
   left: 15px;
-  background: #dfdfdf;
+
+  background: var(--color-gray-200);
   border-radius: 8px;
+
   z-index: 2;
 }
 
 .menu {
-  display: flex;
-  justify-content: space-between;
-  padding-left: 10px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  gap: 8px;
+
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .menuWrapper {
+  display: grid;
+  grid-template-columns: 0fr;
+
   overflow: hidden;
   transition: 0.3s ease;
 }
 
 .menuWrapper.open {
-  width: 132px;
-}
-
-.menuWrapper.close {
-  width: 0px;
+  padding-left: 8px;
+  grid-template-columns: 1fr;
 }
 
 .menuBar {
@@ -37,7 +45,7 @@
 
 .menuList {
   position: relative;
-  background: #dfdfdf;
+  background: var(--color-menu-bg);
   border-radius: 8px;
 }
 
@@ -53,18 +61,39 @@
 }
 
 .menuName {
-  display: none;
   position: absolute;
-  padding: 5px;
-  margin-top: 5px;
+
+  padding: 4px 8px;
+  margin-top: 2px;
+
   top: 100%;
   white-space: nowrap;
-  background: #fff;
+  background: var(--color-white);
   border-radius: 5px;
-  color: #333;
+
+  visibility: hidden;
+  opacity: 0;
+
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.menuName span {
+  color: var(--color-text-dark);
   font-size: 14px;
 }
 
+.menuButton svg {
+  color: var(--color-icon);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.menuButton:hover svg {
+  color: var(--color-icon-hover);
+}
+
 .menuButton:hover .menuName {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }

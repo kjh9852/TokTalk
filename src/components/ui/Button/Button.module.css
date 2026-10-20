@@ -2,18 +2,18 @@
   flex: 0;
   min-width: 100px;
   max-width: 100%;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 8px;
   font-weight: 500;
   font-size: 16px;
-  color: #000;
-  background: #62ff74;
+  color: var(--color-black);
+  background: var(--color-primary);
   cursor: pointer;
 }
 
 .disabled {
-  background: #ededed;
-  color: #999;
+  background: var(--color-disabled);
+  color: var(--color-disabled-text);
 }
 
 .large {

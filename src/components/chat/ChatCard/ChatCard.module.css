@@ -5,12 +5,23 @@
   overflow-y: auto;
 }
 
+.container::-webkit-scrollbar {
+  width: 10px;
+  height: 20px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: var(--color-primary); /* 스크롤바 막대 색상 */
+  border: 2px solid var(--color-primary-hover); /* 스크롤바 막대 테두리 설정  */
+  border-radius: 12px 12px 12px 12px;
+}
+
 .chat {
   margin: 8px 0;
   word-break: break-all;
-  color: #fff;
+  color: var(--color-white);
 }
 
 .localColor {
-  color: #4aff2b;
+  color: var(--color-primary);
 }

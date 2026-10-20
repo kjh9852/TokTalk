@@ -10,7 +10,10 @@ export default function AdminForm({
   isAdmin,
 }) {
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <form
+      className={`${styles.form} ${styles.adminForm}`}
+      onSubmit={onSubmit}
+    >
       <Input
         id="nickname"
         defaultValue={defaultValue}

@@ -1,53 +1,61 @@
+.settingLabel {
+  margin-bottom: 4px;
+  font-size: 16px;
+  color: var(--color-black);
+}
+
 .toggle {
   position: relative;
+
   display: flex;
   align-items: center;
-  width: 60px;
-  height: 22px;
-  background: #ccc;
-  border-radius: 30px;
+
+  width: 68px;
+  height: 30px;
   padding: 4px;
-  transition: all 0.3s;
+
+  background-color: var(--color-gray-100);
+  border-radius: 30px;
+
+  transition: background-color 0.3s ease;
+  box-sizing: content-box;
   cursor: pointer;
 }
 
 .toggle.on {
-  background: #4caf50;
+  background-color: var(--color-primary);
 }
 
-.toggle.on .knob {
-  transform: translateX(37px);
-}
-
-.title {
-  margin-bottom: 4px;
-  font-size: 16px;
-  color: #000;
-}
-
-.label {
+.option {
   position: absolute;
   top: 50%;
+  width: 34px;
   transform: translateY(-50%);
-  transition: all 0.3s;
+
   font-size: 12px;
   font-weight: 500;
-  color: #000;
+  text-align: center;
+
+  color: var(--color-black);
   z-index: 2;
 }
 
-.label.left {
-  left: 8px;
+.option.left {
+  left: 3px;
 }
 
-.label.right {
-  right: 8px;
+.option.right {
+  right: 3px;
 }
 
 .knob {
-  width: 22px;
-  height: 22px;
-  background: #fff;
+  width: 32px;
+  height: 32px;
+  background: var(--color-white);
   border-radius: 50%;
-  transition: all 0.3s;
+  transition: transform 0.3s ease;
+}
+
+.on .knob {
+  transform: translateX(36px);
 }

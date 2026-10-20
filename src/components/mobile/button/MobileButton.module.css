@@ -1,6 +1,5 @@
 .mobileButton {
   position: absolute;
-  background: #d2d2d2;
   width: 70px;
   height: 70px;
   border-radius: 50%;
@@ -9,11 +8,12 @@
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   transition: all 0.2s ease;
+  background: var(--color-white);
   cursor: pointer;
 }
 
 .active {
-  background: #f4c7a1;
+  background: var(--color-control-active);
   transform: scale(0.95);
 }
 
@@ -61,9 +61,11 @@
 }
 
 .action:disabled {
-  background: #a2a2a2;
+  background: var(--color-control-disabled);
 }
-
+.action span {
+  color: var(--color-gray-400);
+}
 .push {
   bottom: 25px;
   right: 100px;
