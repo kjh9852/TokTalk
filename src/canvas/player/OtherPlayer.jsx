@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
@@ -17,54 +17,27 @@ export default function OtherPlayer({
   const playerRef = useRef();
 
   const targetQuat = useRef(new THREE.Quaternion());
-
-  const nextPos = useRef(new THREE.Vector3());
-
-  const snapshots = useRef([]);
-
-  useEffect(() => {
-    if (!position || !playerRef.current) return;
-
-    snapshots.current.push({
-      time: performance.now(),
-      position: new THREE.Vector3(position[0], position[1], position[2]),
-    });
-
-    if (snapshots.current.length === 0) {
-      playerRef.current.setTranslation(snapshots.position, true);
-    }
-
-    if (snapshots.current.length > 10) {
-      snapshots.current.shift();
-    }
-  }, [position]);
-
-  const INTTERPOLATION_DELAY = 200;
+  const targetPos = useRef(new THREE.Vector3());
 
   useFrame((_, delta) => {
     if (!playerRef.current) return;
 
-    const buffer = snapshots.current;
-    const renderTime = performance.now() - INTTERPOLATION_DELAY;
+    if (position) {
+      targetPos.current.set(position[0], position[1], position[2]);
 
-    while (buffer.length >= 2 && buffer[1].time <= renderTime) {
-      buffer.shift();
+      // 현재 라피어 물리 바디의 위치를 가져옵니다.
+      const currentPos = playerRef.current.translation();
+      const currentPosVec = new THREE.Vector3(
+        currentPos.x,
+        currentPos.y,
+        currentPos.z,
+      );
+
+      currentPosVec.lerp(targetPos.current, 1 - Math.exp(-10 * delta));
+
+      // 보간된 위치를 물리 엔진 바디에 부드럽게 반영
+      playerRef.current.setNextKinematicTranslation(currentPosVec);
     }
-
-    if (buffer.length < 2) return;
-
-    const from = buffer[0];
-    const to = buffer[1];
-
-    const duration = to.time - from.time;
-
-    if (duration <= 0) return;
-
-    const t = THREE.MathUtils.clamp((renderTime - from.time) / duration, 0, 1);
-
-    nextPos.current.lerpVectors(from.position, to.position, t);
-
-    playerRef.current.setNextKinematicTranslation(nextPos.current);
 
     // 2. 부모(소켓)에게 받은 최신 회전 Quaternion 배열 적용
     if (rotation) {
@@ -85,7 +58,7 @@ export default function OtherPlayer({
       );
 
       // 회전도 부드럽게 slerp(구면 선형 보간) 처리
-      const alpha = 1 - Math.exp(-12.5 * delta);
+      const alpha = 1 - Math.exp(-10 * delta);
       currentQuat.slerp(targetQuat.current, alpha);
 
       playerRef.current.setNextKinematicRotation(currentQuat);
@@ -98,6 +71,7 @@ export default function OtherPlayer({
       mass={1}
       type="kinematicPosition"
       ref={playerRef}
+      position={[0, 5, 0]}
       lockRotations
     >
       <CapsuleCollider args={[0.2, 0.4]} />

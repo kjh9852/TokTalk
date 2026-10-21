@@ -155,7 +155,7 @@ export default function Player({
       type="dynamic"
       ref={playerRef}
       lockRotations
-      position={[0, 5, -8]}
+      position={[0, 5, 0]}
     >
       <CapsuleCollider args={[0.2, 0.4]} />
       <PlayerModel
