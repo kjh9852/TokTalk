@@ -19,9 +19,14 @@ export default function Input({
 
   return (
     <div className={styles.container}>
-      <label className={styles.label} htmlFor={id}>
-        {label}
-      </label>
+      {label && (
+        <label
+          className={styles.label}
+          htmlFor={id}
+        >
+          {label}
+        </label>
+      )}
       <input
         ref={inputRef}
         className={styles.input}

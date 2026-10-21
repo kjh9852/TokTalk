@@ -60,12 +60,14 @@ export default function Setting() {
         />
       </div>
       {adminMode && (
-        <AdminForm
-          isAdmin={isAdmin}
-          onSubmit={handleSubmit}
-          defaultValue={adminCode}
-          onChange={handleAdminCodeChange}
-        />
+        <div className={styles.adminContainer}>
+          <AdminForm
+            isAdmin={isAdmin}
+            onSubmit={handleSubmit}
+            defaultValue={adminCode}
+            onChange={handleAdminCodeChange}
+          />
+        </div>
       )}
       {isAdmin && (
         <div>

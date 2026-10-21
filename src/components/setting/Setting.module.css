@@ -1,14 +1,18 @@
 .container {
-  padding-bottom: 24px;
+  padding-bottom: 34px;
 }
 
 .toggleContainer {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 10px;
 }
 
 .text {
+  margin-bottom: 6px;
   color: var(--color-text-dark);
+}
+
+.adminContainer {
+  margin-top: 8px;
 }
