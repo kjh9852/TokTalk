@@ -11,6 +11,8 @@
     "^@/page/(.*)$",
     "^[./]"
   ],
+  "printWidth": 80,
+  "singleAttributePerLine": true,
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }
