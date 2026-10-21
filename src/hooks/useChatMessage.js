@@ -10,7 +10,7 @@ export function useChatMessage(socket) {
   useEffect(() => {
     if (!socket) return;
 
-    const handleReceive = (message) => {
+    const handleReceiveMessage = (message) => {
       setChatArr((prev) => {
         const recentMessage = [...prev, message];
         return recentMessage.length > 10
@@ -19,14 +19,14 @@ export function useChatMessage(socket) {
       });
 
       if (!isChatOpen) {
-        setChatCount((count) => Math.min(count + 1, 10));
+        setChatCount((count) => Math.min(count + 1, 11));
       }
     };
 
-    socket.on("receiveMessage", handleReceive);
+    socket.on("receiveMessage", handleReceiveMessage);
 
     return () => {
-      socket.off("receiveMessage", handleReceive);
+      socket.off("receiveMessage", handleReceiveMessage);
     };
   }, [socket, isChatOpen]);
   // 메세지 최대 갯수를 10개만 남김
