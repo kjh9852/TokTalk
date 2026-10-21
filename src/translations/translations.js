@@ -7,6 +7,7 @@ export const translations = {
         info: "정보",
         setting: "설정",
         postedit: "게시글 관리",
+        guide: "조작 방법",
       },
       button: {
         nickname: "변경",
@@ -45,6 +46,7 @@ export const translations = {
         post: "Create Post",
         info: "Information",
         setting: "Setting",
+        guide: "Control Guide",
       },
       button: {
         nickname: "Change",
