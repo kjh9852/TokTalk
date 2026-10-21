@@ -9,7 +9,7 @@ export const syncPlayerState = ({
   lastSentRef,
   onUpdate,
 }) => {
-  if (now - lastSentRef.current <= 150) return;
+  if (now - lastSentRef.current <= 100) return;
 
   const playerPosition = playerRef.current.translation();
   const playerRotation = playerRef.current.rotation();
