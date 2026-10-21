@@ -2,6 +2,7 @@ import useLanguage from "@/hooks/useLanguage";
 
 import NickNameForm from "@/components/form/NickNameForm";
 import PostForm from "@/components/form/PostForm";
+import ControlGuide from "@/components/guide/ControlGuide";
 import InfoContent from "@/components/modal/InfoContent";
 import PostEditList from "@/components/post/PostEdit/PostEditList";
 import Setting from "@/components/setting/Setting";
@@ -31,7 +32,10 @@ export default function ModalContent({
       {modalType === "post" && (
         <>
           <h2 className={styles.modalTitle}>{t.modal.title[modalType]}</h2>
-          <PostForm closeForm={closeForm} nickname={nickname} />
+          <PostForm
+            closeForm={closeForm}
+            nickname={nickname}
+          />
         </>
       )}
       {modalType === "postedit" && (
@@ -52,6 +56,12 @@ export default function ModalContent({
         <>
           <h2 className={styles.modalTitle}>{t.modal.title[modalType]}</h2>
           <Setting />
+        </>
+      )}
+      {modalType === "guide" && (
+        <>
+          <h2 className={styles.modalTitle}>{t.modal.title[modalType]}</h2>
+          <ControlGuide />
         </>
       )}
     </>

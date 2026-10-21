@@ -1,4 +1,4 @@
-import CloseIcon from "@/assets/icons/close.png";
+import closeIcon from "@/assets/icons/close.png";
 import { useModalStore } from "@/store/modalStore";
 import { useUserStore } from "@/store/userStore";
 
@@ -24,11 +24,18 @@ export default function Modal({ nickname, onSetNickName }) {
 
   return (
     <div
-      className={`${styles.container} ${modalType !== "postedit" ? styles.default : ""}`}
+      className={`${styles.container} ${modalType !== "postedit" && modalType !== "guide" ? styles.default : ""} ${modalType === "guide" ? styles.guide : ""}`}
     >
       <div className={styles.wrapper}>
-        <button className={styles.closeButton} onClick={handleModalClose}>
-          <img className={styles.closeIcon} src={CloseIcon} alt="닫기" />
+        <button
+          className={styles.closeButton}
+          onClick={handleModalClose}
+        >
+          <img
+            className={styles.closeIcon}
+            src={closeIcon}
+            alt="닫기"
+          />
         </button>
         <ModalContent
           modalType={modalType}
