@@ -144,6 +144,7 @@ export default function Player({
         isMoving,
         lastSentRef,
         onUpdate,
+        pitch: playerInput.pitch,
       });
     }
   });
@@ -163,6 +164,7 @@ export default function Player({
         message={message}
         isTyping={isTyping}
         isMoving={isMoving}
+        headPitch={playerInput.pitch}
       />
     </RigidBody>
   );

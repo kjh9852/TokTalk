@@ -27,6 +27,7 @@ export default function PlayerManager({ players, socket, onPlayerUpdate }) {
             isMoving={state.isMoving}
             message={state.currentMessage}
             nickname={state.nickname ?? "익명"}
+            headPitch={state.headPitch}
           />
         );
       })}

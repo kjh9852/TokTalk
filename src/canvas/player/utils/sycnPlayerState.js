@@ -8,6 +8,7 @@ export const syncPlayerState = ({
   isMoving,
   lastSentRef,
   onUpdate,
+  pitch,
 }) => {
   if (now - lastSentRef.current <= 100) return;
 
@@ -45,6 +46,7 @@ export const syncPlayerState = ({
       playerRotation.w,
     ],
     isMoving: isMoving,
+    headPitch: pitch,
   };
 
   onUpdate(newState); // 부모 컴포넌트를 통해 서버에 데이터 전송

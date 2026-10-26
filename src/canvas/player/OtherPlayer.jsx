@@ -13,6 +13,7 @@ export default function OtherPlayer({
   nickname,
   message,
   isTyping,
+  headPitch,
 }) {
   const playerRef = useRef();
 
@@ -80,6 +81,7 @@ export default function OtherPlayer({
         message={message}
         isTyping={isTyping}
         isMoving={isMoving}
+        headPitch={headPitch}
       />
     </RigidBody>
   );
