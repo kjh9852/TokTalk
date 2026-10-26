@@ -56,7 +56,7 @@ export const usePersonControls = () => {
         nextPitch = Math.max(MIN_PITCH, Math.min(MAX_PITCH, nextPitch));
         return {
           ...m,
-          yaw: m.yaw - e.movementX * 0.001,
+          yaw: m.yaw - e.movementX * 0.0008,
           pitch: nextPitch,
         };
       });
